@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#654321</color>
+    <color name="colorPrimaryDark">#A52A2A</color>
+    <color name="colorAccent">#654321</color>
+    <color name="background_main">#FFF44F</color>
+    <color name="button_grad_start">#911E42</color>
+    <color name="button_grad_end">#fff</color>
+    <color name="main_text_color">#808080</color>
+</resources>

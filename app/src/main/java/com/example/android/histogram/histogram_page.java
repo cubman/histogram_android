@@ -1,13 +1,20 @@
 package com.example.android.histogram;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 
+import java.io.IOException;
+
 public class histogram_page extends AppCompatActivity {
+
+    private static final int GALLERY_REQUEST = 1;
 
     private String user_name;
     @Override
@@ -30,4 +37,5 @@ public class histogram_page extends AppCompatActivity {
         startActivity(questionIntent);
 
     }
+
 }

@@ -11,4 +11,6 @@
     <string name="back_to_menu">Назад</string>
     <string name="camera">Камера</string>
     <string name="gallery">Галерея</string>
+    <string name="histogram_activation">Активация гистограммы</string>
+    <string name="build_histogram">Построить</string>
 </resources>

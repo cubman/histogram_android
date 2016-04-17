@@ -10,4 +10,6 @@
     <string name="back_to_menu">Back</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="histogram_activation">Activation histogram</string>
+    <string name="build_histogram">Build</string>
 </resources>

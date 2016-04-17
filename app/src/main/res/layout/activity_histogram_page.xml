@@ -71,7 +71,6 @@
             android:layout_height="220dp"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_histogram"
-            android:src="@mipmap/ic_launcher"
             />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -128,6 +127,7 @@
         android:background="@drawable/round"
         android:theme="@style/Font_App_Button_Styles"
         android:id="@+id/button4"
+        android:onClick="builing_hisogram"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/scrollView"
         android:layout_alignEnd="@+id/scrollView" />

@@ -16,6 +16,7 @@ public class histogram_page extends AppCompatActivity {
 
     private static final int GALLERY_REQUEST = 1;
 
+    private Image_Work im;
     private String user_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,13 @@ public class histogram_page extends AppCompatActivity {
         tw.setText(getString(R.string.user_name, user_name));
     }
 
+    public void builing_hisogram(View v) {
+        ImageView im_v_1 = (ImageView)findViewById(R.id.image_view_main);
+        ImageView im_v_2 = (ImageView)findViewById(R.id.image_view_histogram);
+        im  = new Image_Work(im_v_1.getDrawingCache());
+        im.get_gitogram(1512,1512);
+       // im_v_2.setImageBitmap();
+    }
     public void back_to_menu(View v) {
         Intent questionIntent = new Intent(histogram_page.this,
                 Main.class);

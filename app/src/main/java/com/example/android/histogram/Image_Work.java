@@ -28,6 +28,8 @@ public class Image_Work {
     public Bitmap get_gitogram(int heigh, int width) {
         Bitmap bm_return = Bitmap.createBitmap(heigh, width, Bitmap.Config.ARGB_8888);
 
+       // count_histogram();
+
         bm_return.eraseColor(Color.RED);
 
         return bm_return;

@@ -6,4 +6,6 @@
     <dimen name="content_hight_margin">100dp</dimen>
     <dimen name="content_horizontal_margin">25dp</dimen>
     <dimen name="content_vertical_margin">25dp</dimen>
+
+    <dimen name="content_horisontal_Histogram">35dp</dimen>
 </resources>

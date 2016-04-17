@@ -8,4 +8,7 @@
                                 Желаю успехов!</string>
     <string name="Name_label">Пожалуйста введите свое имя</string>
     <string name="user_name">Здравствуйте, %1$s!</string>
+    <string name="back_to_menu">Назад</string>
+    <string name="camera">Камера</string>
+    <string name="gallery">Галерея</string>
 </resources>

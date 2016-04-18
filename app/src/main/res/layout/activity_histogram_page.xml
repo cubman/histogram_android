@@ -10,6 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.android.histogram.histogram_page"
+    android:background="@color/background_main"
     android:orientation="horizontal"
     android:weightSum="1">
 
@@ -31,6 +32,7 @@
         android:layout_marginBottom="@dimen/content_horisontal_Histogram"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#fff"
         android:layout_below="@+id/button4"
         android:id="@+id/scrollView">
 
@@ -69,6 +71,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="220dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_histogram"
             />
@@ -84,6 +87,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:layout_height="wrap_content"
                 android:text="@string/camera"
                 android:id="@+id/cam"
@@ -94,6 +98,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="@string/gallery"
                 android:id="@+id/galerry"
                 android:background="@drawable/round"
@@ -122,7 +127,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:text="@string/build_histogram"
         android:background="@drawable/round"
         android:theme="@style/Font_App_Button_Styles"

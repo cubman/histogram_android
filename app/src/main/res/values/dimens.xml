@@ -13,4 +13,6 @@
     <dimen name="text_height">20dp</dimen>
 
     <dimen name="button_size">12dp</dimen>
+
+    <dimen name="hisogram_activity_horizontal_margin">3dp</dimen>
 </resources>

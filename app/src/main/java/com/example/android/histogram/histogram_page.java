@@ -32,6 +32,7 @@ import java.util.TimeZone;
 public class histogram_page extends AppCompatActivity {
 
     private static final int GALLERY_REQUEST = 1;
+    private static final  int IMAGE_SIZE = 512;
 
     private Image_Work im;
     Bitmap bm_main, bm_histogram;
@@ -43,39 +44,44 @@ public class histogram_page extends AppCompatActivity {
     ImageView image1, image2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_histogram_page);
 
-        image1 = (ImageView) findViewById(R.id.image_view_main);
-        image2 = (ImageView) findViewById(R.id.image_view_histogram);
+        try {
+            super.onCreate(savedInstanceState);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            setContentView(R.layout.activity_histogram_page);
 
-        // first time the app is started get the bitmap from unknown source.
-        if (savedInstanceState != null) {
-            {
-                bm_main = savedInstanceState.getParcelable("selectedImage1");
-                bm_histogram = savedInstanceState.getParcelable("selectedImage2");
+            image1 = (ImageView) findViewById(R.id.image_view_main);
+            image2 = (ImageView) findViewById(R.id.image_view_histogram);
+
+
+            if (savedInstanceState != null) {
+                {
+                    bm_main = savedInstanceState.getParcelable("selectedImage1");
+                    bm_histogram = savedInstanceState.getParcelable("selectedImage2");
+                }
+                image1.setImageBitmap(bm_main);
+                image2.setImageBitmap(bm_histogram);
             }
-            image1.setImageBitmap(bm_main);
-            image2.setImageBitmap(bm_histogram);
-        }
             user_name = getIntent().getStringExtra("user_name");
 
             TextView tw = (TextView) findViewById(R.id.textView2);
             tw.setText(getString(R.string.user_name, user_name));
 
-        list_toggle=(Switch)findViewById(R.id.switch1);
-        list_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    image2.setVisibility(View.INVISIBLE);
-                } else {
-                    image2.setVisibility(View.VISIBLE);
+            list_toggle = (Switch) findViewById(R.id.switch1);
+            list_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        image2.setVisibility(View.INVISIBLE);
+                    } else {
+                        image2.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
+            });
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Some problem dowloading datas", Toast.LENGTH_SHORT).show();
+        }
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
@@ -91,7 +97,7 @@ public class histogram_page extends AppCompatActivity {
         bm_main = ((BitmapDrawable)im_v_1.getDrawable()).getBitmap();
         im = new Image_Work(bm_main, R.color.background_main);
 
-        bm_histogram = im.get_gitogram(512, 512);
+        bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE);
         im_v_2.setImageBitmap(bm_histogram);
     }
 
@@ -113,29 +119,31 @@ public class histogram_page extends AppCompatActivity {
 
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Here we need to check if the activity that was triggers was the Image Gallery.
-        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
-        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
+    super.onActivityResult(requestCode, resultCode, data);
+    try {
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
-        // Let's read picked image data - its URI
-        Uri pickedImage = data.getData();
-        // Let's read picked image path using content resolver
-        String[] filePath = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
-        cursor.moveToFirst();
-        String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        bm_main = BitmapFactory.decodeFile(imagePath);
+            Uri pickedImage = data.getData();
 
-        if  (bm_main.getWidth() > 950 || bm_main.getHeight() > 720)
-            bm_main = Bitmap.createScaledBitmap(bm_main,  (int)(bm_main.getWidth() * 0.2), (int)(bm_main.getHeight() * 0.2), false);
-        image1.setImageBitmap(bm_main);
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
+            cursor.moveToFirst();
 
-        cursor.close();
+            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            bm_main = BitmapFactory.decodeFile(imagePath);
+
+            if (bm_main.getWidth() > 950 || bm_main.getHeight() > 720)
+                bm_main = Bitmap.createScaledBitmap(bm_main, (int) (bm_main.getWidth() * 0.2), (int) (bm_main.getHeight() * 0.2), false);
+            image1.setImageBitmap(bm_main);
+
+
+            cursor.close();
         }
-        }
+    } catch (Exception e) {
+        Toast.makeText(this, "Some problem in gallery generating", Toast.LENGTH_SHORT).show();
+    }
+}
 }

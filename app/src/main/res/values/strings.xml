@@ -3,14 +3,15 @@
     <string name="start_button">Start</string>
     <string name="Histogram_title">Paint hostogram</string>
     <string name="exit">Exit</string>
-    <string name="Hello_enter">Nice to meet you at my android aplicatio!\n
-                                I hope, you will enjoy, using it! Good luck!</string>
+    <string name="Hello_enter">Nice to meet you at my android aplication!\n
+                        If it your first start, click \"About program\"!\n
+                                Good luck!</string>
     <string name="Name_label">Please, enter your name...</string>
     <string name="user_name">Hello, %1$s!</string>
     <string name="back_to_menu">Back</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-    <string name="histogram_activation">Activation histogram</string>
+    <string name="histogram_activation">Histogram deactivation</string>
     <string name="build_histogram">Build</string>
     <string name="About_program">About program</string>
 </resources>

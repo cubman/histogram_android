@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/hisogram_activity_horizontal_margin"
+    android:paddingBottom="@dimen/hisogram_activity_horizontal_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.example.android.histogram.histogram_page"
@@ -33,7 +35,7 @@
         android:background="#fff"
         android:layout_below="@+id/button4"
         android:id="@+id/scrollView"
-        >
+        android:fillViewport="false">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -74,26 +76,19 @@
             android:id="@+id/image_view_histogram"
             />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:text="@string/gallery"
                 android:onClick="load_picture_from_gallary"
                 android:id="@+id/galerry"
                 android:background="@drawable/round"
                 android:theme="@style/Font_App_Button_Styles"
-                android:layout_weight="1" />
+                android:layout_above="@+id/image_view_histogram" />
 
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>
 

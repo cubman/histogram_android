@@ -81,7 +81,7 @@ public class histogram_page extends AppCompatActivity {
         ImageView im_v_2 = (ImageView)findViewById(R.id.image_view_histogram);
 
         bm_main = ((BitmapDrawable)im_v_1.getDrawable()).getBitmap();
-        im = new Image_Work(bm_main);
+        im = new Image_Work(bm_main, R.color.background_main);
 
         bm_histogram = im.get_gitogram(512, 512);
         im_v_2.setImageBitmap(bm_histogram);

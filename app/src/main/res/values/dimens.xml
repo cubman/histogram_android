@@ -8,4 +8,9 @@
     <dimen name="content_vertical_margin">25dp</dimen>
 
     <dimen name="content_horisontal_Histogram">35dp</dimen>
+
+    <dimen name="between_button">45dp</dimen>
+
+    <dimen name="text_height">20dp</dimen>
+
 </resources>

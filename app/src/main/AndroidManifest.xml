@@ -5,7 +5,7 @@
 
     <application
         android:allowBackup="true"
-
+        android:windowSoftInputMode="stateHidden|adjustResize"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"

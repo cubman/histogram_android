@@ -14,9 +14,10 @@ public class Image_Work {
     private final int colors_count = 256;
 
     private Bitmap bm;
+    private int color;
     private int[] main_rgb = new int[colors_count];
 
-    public  Image_Work(Bitmap bm) {this.bm = bm;}
+    public  Image_Work(Bitmap bm, int c) {this.bm = bm; this.color = c;}
 
     private void count_histogram() {
         for (int i = 0; i < bm.getHeight(); ++i)
@@ -24,8 +25,6 @@ public class Image_Work {
                 int pic = bm.getPixel(i, j);
                 ++main_rgb[(int) (0.3 * Color.red(pic) + 0.59 * Color.green(pic) + 0.11 * Color.blue(pic))];
             }
-        for (int i = 0; i < colors_count; ++i)
-        Log.d(String.valueOf(i), String.valueOf( main_rgb[i]));
     }
 
     public Bitmap get_gitogram(int heigh, int width) {
@@ -52,10 +51,9 @@ public class Image_Work {
         int step = width / colors_count;
         Canvas c = new Canvas(bm_return);
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setColor(Color.BLUE);
+        p.setColor(this.color);
 
         for (int i = 0; i < colors_count; ++i)
-            //c.drawRect(i * step, hight, 2, (hight * main_rgb[i]) / max, p);
             c.drawRect(i * step, 2, (1 + i) * step, (height * main_rgb[i]) / max, p);
 
         c.rotate(90, width/2, height/2);

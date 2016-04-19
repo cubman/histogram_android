@@ -6,11 +6,12 @@
     <string name="exit">Выход</string>
     <string name="Hello_enter">Рад приветствовать тебя!\n
                                 Желаю успехов!</string>
-    <string name="Name_label">Пожалуйста введите свое имя</string>
+    <string name="Name_label">Пожалуйста, введите свое имя...</string>
     <string name="user_name">Здравствуйте, %1$s!</string>
     <string name="back_to_menu">Назад</string>
     <string name="camera">Камера</string>
     <string name="gallery">Галерея</string>
     <string name="histogram_activation">Активация гистограммы</string>
     <string name="build_histogram">Построить</string>
+    <string name="About_program">О программе</string>
 </resources>

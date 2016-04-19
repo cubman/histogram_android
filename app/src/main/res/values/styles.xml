@@ -10,13 +10,13 @@
 
     <style name="Font_App_Button_Styles">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#00FF00</item>
+        <item name="android:textColor">@color/button_color</item>
         <item name="android:typeface">monospace</item>
     </style>
 
     <style name="Font_App_Styles">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">@color/main_text_color</item>
         <item name="android:typeface">monospace</item>
     </style>
 </resources>

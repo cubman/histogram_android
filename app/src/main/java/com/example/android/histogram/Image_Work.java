@@ -22,7 +22,7 @@ public class Image_Work {
     private void count_histogram() {
         for (int i = 0; i < bm.getHeight(); ++i)
             for (int j = 0;j <bm.getWidth();++j) {
-                int pic = bm.getPixel(i, j);
+                int pic = bm.getPixel(j, i);
                 ++main_rgb[(int) (0.3 * Color.red(pic) + 0.59 * Color.green(pic) + 0.11 * Color.blue(pic))];
             }
     }
@@ -37,9 +37,11 @@ public class Image_Work {
 
     private int find_max_height() {
         int max = -Integer.MAX_VALUE;
+
         for (int i = 0; i < colors_count; ++i)
             if (max < main_rgb[i])
                 max = main_rgb[i];
+
         return  max;
     }
 
@@ -51,12 +53,13 @@ public class Image_Work {
         int step = width / colors_count;
         Canvas c = new Canvas(bm_return);
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+
         p.setColor(this.color);
 
         for (int i = 0; i < colors_count; ++i)
             c.drawRect(i * step, 2, (1 + i) * step, (height * main_rgb[i]) / max, p);
 
-        c.rotate(90, width/2, height/2);
+        c.rotate(90, height/2, width/2);
 
         return bm_return;
     }

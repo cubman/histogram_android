@@ -21,7 +21,6 @@
 
             <activity android:name=".histogram_page"
             android:label="@string/Histogram_title">></activity>
-
     </application>
 
 </manifest>

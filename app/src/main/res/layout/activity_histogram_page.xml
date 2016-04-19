@@ -84,17 +84,6 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_height="wrap_content"
-                android:text="@string/camera"
-                android:id="@+id/cam"
-                android:background="@drawable/round"
-                android:theme="@style/Font_App_Button_Styles"
-                android:layout_weight="1" />
-
-            <Button
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="@string/gallery"

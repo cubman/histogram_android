@@ -131,14 +131,10 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         bm_main = BitmapFactory.decodeFile(imagePath);
 
-            if  (bm_main.getWidth() > 1300 || bm_main.getHeight() > 1700)
-            bm_main = Bitmap.createScaledBitmap(bm_main, Math.min(1600, bm_main.getWidth()), Math.min(2028, bm_main.getHeight()), true);
+        if  (bm_main.getWidth() > 950 || bm_main.getHeight() > 720)
+            bm_main = Bitmap.createScaledBitmap(bm_main,  (int)(bm_main.getWidth() * 0.2), (int)(bm_main.getHeight() * 0.2), false);
         image1.setImageBitmap(bm_main);
 
-        // Do something with the bitmap
-
-
-        // At the end remember to close the cursor or you will end with the RuntimeException!
         cursor.close();
         }
         }

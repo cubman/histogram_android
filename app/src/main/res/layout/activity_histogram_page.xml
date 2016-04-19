@@ -34,7 +34,8 @@
         android:layout_height="match_parent"
         android:background="#fff"
         android:layout_below="@+id/button4"
-        android:id="@+id/scrollView">
+        android:id="@+id/scrollView"
+        >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -71,7 +72,6 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_histogram"
             />

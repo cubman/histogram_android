@@ -18,7 +18,7 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);

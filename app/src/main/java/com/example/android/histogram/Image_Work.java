@@ -59,6 +59,7 @@ public class Image_Work {
             c.drawRect(i * step, 2, (1 + i) * step, (height * main_rgb[i]) / max, p);
 
         c.rotate(90, width/2, height/2);
+
         return bm_return;
     }
 }

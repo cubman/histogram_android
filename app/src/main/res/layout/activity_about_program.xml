@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/back_to_menu"
         android:id="@+id/button5"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:onClick="back_to_menu"
         android:background="@drawable/round"
         android:layout_below="@+id/textView_about_program_1"

@@ -15,4 +15,6 @@
     <dimen name="button_size">12dp</dimen>
 
     <dimen name="hisogram_activity_horizontal_margin">3dp</dimen>
+
+    <dimen name="all_little_strings">15dp</dimen>
 </resources>

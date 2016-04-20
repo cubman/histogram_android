@@ -104,9 +104,22 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/all_little_strings"
+            android:layout_below="@+id/button2"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/who_am_i"
+            android:textColor="@color/main_text_color"
+            android:textSize="@dimen/all_little_strings"
+            android:id="@+id/textView3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/button2"
+            android:layout_alignEnd="@+id/button2" />
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 </ScrollView>
 </RelativeLayout>
 

@@ -25,11 +25,21 @@ public class Main extends AppCompatActivity {
     }
 
 
+  /*  private String get_user_name() {
+        String user_name = new String();
+        return user_name;
+    }*/
+
     public void onClick_histogram(View v) {
         Intent intent = new Intent(Main.this,
                 histogram_page.class);
 
         TextView quantityTextView = (TextView) findViewById(R.id.edit_text_main);
+
+        String user_name = quantityTextView.getText().toString();//
+        if (user_name.length() == 0)//
+            user_name = getResources().getString(R.string.incognito);//
+        Log.d("123", String.valueOf(user_name.length()));//
 
         intent.putExtra("user_name", quantityTextView.getText().toString());
 

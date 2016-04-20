@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,11 +23,13 @@ import android.widget.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class histogram_page extends AppCompatActivity {
@@ -62,6 +65,11 @@ public class histogram_page extends AppCompatActivity {
                 image1.setImageBitmap(bm_main);
                 image2.setImageBitmap(bm_histogram);
             }
+            else {
+                bm_main = BitmapFactory.decodeResource(getResources(), get_ramdom_image());
+                image1.setImageBitmap(bm_main);
+                image2.setImageDrawable(null);
+            }
             user_name = getIntent().getStringExtra("user_name");
 
             TextView tw = (TextView) findViewById(R.id.textView2);
@@ -83,6 +91,13 @@ public class histogram_page extends AppCompatActivity {
             Toast.makeText(this, "Some problem dowloading datas", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private int get_ramdom_image() {
+        int [] l = new int[]{R.drawable.test1,R.drawable.test2,R.drawable.test3};
+
+        return l[new Random().nextInt(l.length)];
+    }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
@@ -91,25 +106,27 @@ public class histogram_page extends AppCompatActivity {
     }
 
     public void builing_hisogram(View v) {
-        ImageView im_v_1 = (ImageView)findViewById(R.id.image_view_main);
-        ImageView im_v_2 = (ImageView)findViewById(R.id.image_view_histogram);
+        try {
+            bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
+            im = new Image_Work(bm_main, R.color.background_main);
 
-        bm_main = ((BitmapDrawable)im_v_1.getDrawable()).getBitmap();
-        im = new Image_Work(bm_main, R.color.background_main);
-
-        bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE);
-        im_v_2.setImageBitmap(bm_histogram);
+            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE);
+            image2.setImageBitmap(bm_histogram);
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Histogram could be built", Toast.LENGTH_SHORT).show();
+        }
     }
 
+    // Кнопка "назад"
     public void back_to_menu(View v) {
-        Intent questionIntent = new Intent(histogram_page.this,
-                Main.class);
 
-        System.exit(0);
-        startActivity(questionIntent);
 
+        finish();
+        super.onBackPressed();
     }
 
+    // Загрузка изображения из галереи
     public void load_picture_from_gallary(View v) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -117,6 +134,7 @@ public class histogram_page extends AppCompatActivity {
     }
 
 
+    // действия по запуску галереи
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -141,6 +159,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
             cursor.close();
+            image2.setImageBitmap(bm_histogram = null);
         }
     } catch (Exception e) {
         Toast.makeText(this, "Some problem in gallery generating", Toast.LENGTH_SHORT).show();

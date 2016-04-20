@@ -57,7 +57,6 @@
             android:layout_height="220dp"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_main"
-            android:src="@drawable/test2"
             />
 
         <Switch

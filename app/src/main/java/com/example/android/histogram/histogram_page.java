@@ -39,7 +39,6 @@ public class histogram_page extends AppCompatActivity {
 
     private Image_Work im;
     Bitmap bm_main, bm_histogram;
-    private static final String KEY_COUNT = "COUNT";
 
     private String user_name;
 
@@ -120,8 +119,6 @@ public class histogram_page extends AppCompatActivity {
 
     // Кнопка "назад"
     public void back_to_menu(View v) {
-
-
         finish();
         super.onBackPressed();
     }

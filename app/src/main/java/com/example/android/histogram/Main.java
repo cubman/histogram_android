@@ -25,7 +25,7 @@ public class Main extends AppCompatActivity {
     }
 
 
-    public void onClick(View v) {
+    public void onClick_histogram(View v) {
         Intent intent = new Intent(Main.this,
                 histogram_page.class);
 
@@ -36,6 +36,16 @@ public class Main extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+    public void onClick_about_program(View v) {
+        Intent intent = new Intent(Main.this,
+                about_program.class);
+
+        TextView quantityTextView = (TextView) findViewById(R.id.edit_text_main);
+
+        intent.putExtra("user_name", quantityTextView.getText().toString());
+
+        startActivityForResult(intent, 1);
+    }
 
     public void ExitClick(View v) {
         System.exit(0);

@@ -70,7 +70,7 @@
             android:paddingTop="@dimen/activity_horizontal_margin"
             android:id="@+id/button"
             android:theme="@style/Font_App_Button_Styles"
-            android:onClick="onClick"
+            android:onClick="onClick_histogram"
             android:layout_below="@+id/edit_text_main"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -84,7 +84,7 @@
             android:paddingTop="@dimen/activity_horizontal_margin"
             android:id="@+id/button3"
             android:theme="@style/Font_App_Button_Styles"
-            android:onClick="onClick"
+            android:onClick="onClick_about_program"
             android:layout_below="@+id/button"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />

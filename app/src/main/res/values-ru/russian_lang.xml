@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Гистограмма изображения</string>
     <string name="start_button">Начать</string>
     <string name="Histogram_title">Изобразить гистограмму</string>
     <string name="exit">Выход</string>

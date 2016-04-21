@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Image histogram</string>
+    <string name="app_name">HistogROID</string>
     <string name="start_button">Start</string>
     <string name="Histogram_title">Paint hostogram</string>
     <string name="exit">Exit</string>
@@ -10,13 +10,17 @@
     <string name="histogram_activation">Histogram deactivation</string>
     <string name="build_histogram">Build</string>
     <string name="About_program">About</string>
-    <string name="About_program_enter">Welcome, %1$s! Pleace, read it!\n\n
+    <string name="About_program_enter">Welcome, %1$s!\n\n
                                       An image histogram is a type of histogram that acts as a graphical representation of the tonal
                                       distribution in a digital image. It plots the number of pixels for each tonal value. By looking at the histogram for
                                       a specific image a viewer will be able to judge the entire tonal distribution at a glance.\n\n
                                       Image histograms are present on many modern digital cameras. Photographers can use them as an aid to show the
                                       distribution of tones captured, and whether image detail has been lost to blown-out highlights or blacked-out
-                                      shadows\n\n </string>
+                                      shadows\n\n
+                                      The horizontal axis of the graph represents the tonal variations, while the vertical axis represents
+                                      the number of pixels in that particular tone. The left side of the horizontal axis represents the black
+                                      and dark areas, the middle represents medium grey and the right hand
+                                      side represents light and pure white areas. </string>
     <string name="who_am_i">Developed by: Abramov Anatoly ©</string>
     <string name="incognito">Incognito</string>
 </resources>

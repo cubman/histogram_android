@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:focusable="true"
     android:id="@+id/relativeLayout_main"
     android:focusableInTouchMode="true"
@@ -22,7 +22,9 @@
         tools:context="com.example.android.histogram.Main"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/relativeLayout"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/textView3">
 
 
 
@@ -64,9 +66,9 @@
             android:id="@+id/button3"
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClick_about_program"
-            android:layout_above="@+id/textView3"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <!-- <Button
             android:layout_width="match_parent"
@@ -82,19 +84,18 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/who_am_i"
-            android:textColor="@color/main_text_color"
-            android:textSize="@dimen/all_little_strings"
-            android:id="@+id/textView3"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/button3"
-            android:layout_alignEnd="@+id/button3"
-            android:layout_marginBottom="@dimen/between_button"/>
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/who_am_i"
+        android:textColor="@color/main_text_color"
+        android:textSize="@dimen/all_little_strings"
+        android:id="@+id/textView3"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
 

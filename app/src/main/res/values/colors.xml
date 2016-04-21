@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#A52A2A</color>
+    <color name="colorPrimary">#008080</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#654321</color>
-    <color name="background_main">#000080</color>
-    <color name="button_grad_start">#00BFFF</color>
-    <color name="button_grad_end">#fff</color>
-    <color name="main_text_color">#fff</color>
-    <color name="button_color">#000</color>
+    <color name="background_main">#fff</color>
+    <color name="button_color">#008B8B</color>
+    <color name="button_grad_end">#ECF6F9</color>
+    <color name="main_text_color">#000</color>
+    <color name="button_text_color">#fff</color>
 </resources>

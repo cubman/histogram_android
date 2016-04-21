@@ -2,6 +2,7 @@ package com.example.android.histogram;
 
 import android.graphics.*;
 import android.graphics.drawable.RotateDrawable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.util.List;
@@ -51,16 +52,21 @@ public class Image_Work {
         int width = bm_return.getWidth();
 
         int step = width / colors_count;
+        bm_return.eraseColor(Color.parseColor("#F5F5F5"));
+        Matrix matrix = new Matrix();
         Canvas c = new Canvas(bm_return);
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        p.setColor(this.color);
+        p.setColor(Color.BLACK);
+
 
         for (int i = 0; i < colors_count; ++i)
             c.drawRect(i * step, 2, (1 + i) * step, (height * main_rgb[i]) / max, p);
 
-        c.rotate(90, height/2, width/2);
-
+        matrix.preScale(-1, 1);
+        matrix.postRotate(180, width, height / 2);
+        bm_return = Bitmap.createBitmap(bm_return, 0,0,width, height, matrix, false);
+        bm_return.setDensity(DisplayMetrics.DENSITY_DEFAULT);
         return bm_return;
     }
 }

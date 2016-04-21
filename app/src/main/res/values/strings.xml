@@ -1,33 +1,22 @@
 <resources>
-    <string name="app_name">Menu</string>
+    <string name="app_name">Image histogram</string>
     <string name="start_button">Start</string>
     <string name="Histogram_title">Paint hostogram</string>
     <string name="exit">Exit</string>
-    <string name="Hello_enter">  Nice to meet you at my android aplication!\n\n
-                        If this is your first start, click:\n \"About program\"!\n\n
-                                Good luck!</string>
     <string name="Name_label">Please, enter your name...</string>
     <string name="user_name">Hello, %1$s!</string>
     <string name="back_to_menu">Back</string>
-    <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="histogram_activation">Histogram deactivation</string>
     <string name="build_histogram">Build</string>
-    <string name="About_program">About program</string>
+    <string name="About_program">About</string>
     <string name="About_program_enter">Welcome, %1$s! Pleace, read it!\n\n
                                       An image histogram is a type of histogram that acts as a graphical representation of the tonal
                                       distribution in a digital image. It plots the number of pixels for each tonal value. By looking at the histogram for
                                       a specific image a viewer will be able to judge the entire tonal distribution at a glance.\n\n
                                       Image histograms are present on many modern digital cameras. Photographers can use them as an aid to show the
                                       distribution of tones captured, and whether image detail has been lost to blown-out highlights or blacked-out
-                                      shadows\n\n   Instructon:\n\n
-    1. Enter your name, and it\'ll be used by system to detect, who you are\n\n
-    2. \"Start\" send you to a new activity, where you can see randomly generated image\n\n
-      2.1. Button "Build" is building histogram\n
-      2.2. \"Deactivate histogram\" hide and show you built histogram, if you want:)\n
-      2.3. \"Gallery\" send you to your phine gallery, where you can choose one you like\n
-      2.4. \"Back\" send you back, into menu\n\n
-    3. "Exit" close application</string>
+                                      shadows\n\n </string>
     <string name="who_am_i">Developed by: Abramov Anatoly ©</string>
     <string name="incognito">Incognito</string>
 </resources>

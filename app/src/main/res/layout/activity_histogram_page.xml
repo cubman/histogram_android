@@ -23,19 +23,18 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/button4"
-        android:layout_toStartOf="@+id/button4" />
+/>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_marginBottom="@dimen/content_horisontal_Histogram"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
-        android:layout_below="@+id/button4"
         android:id="@+id/scrollView"
-        android:fillViewport="false">
+        android:fillViewport="false"
+        android:layout_below="@+id/textView2"
+        android:layout_above="@+id/galerry">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -76,45 +75,45 @@
             />
 
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
-                android:text="@string/gallery"
-                android:onClick="load_picture_from_gallary"
-                android:id="@+id/galerry"
-                android:background="@drawable/round"
-                android:theme="@style/Font_App_Button_Styles"
-                android:layout_above="@+id/image_view_histogram" />
+
 
     </LinearLayout>
 </ScrollView>
 
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/between_button"
+        android:text="@string/gallery"
+        android:onClick="load_picture_from_gallary"
+        android:id="@+id/galerry"
+        android:background="@drawable/button_style"
+        android:theme="@style/Font_App_Button_Styles"
+        android:layout_above="@+id/button3" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_menu"
+        android:text="@string/build_histogram"
         android:id="@+id/button3"
-        android:background="@drawable/round"
+        android:background="@drawable/button_style"
         android:theme="@style/Font_App_Button_Styles"
-        android:onClick="back_to_menu"
+        android:onClick="builing_hisogram"
         android:layout_gravity="right"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
+ <!--   <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/build_histogram"
-        android:background="@drawable/round"
+        android:text="@string/back_to_menu"
+        android:background="@drawable/button_style"
         android:theme="@style/Font_App_Button_Styles"
         android:id="@+id/button4"
-        android:onClick="builing_hisogram"
+        android:onClick="back_to_menu"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/scrollView"
-        android:layout_alignEnd="@+id/scrollView" />
+        android:layout_alignEnd="@+id/scrollView" />-->
 </RelativeLayout>

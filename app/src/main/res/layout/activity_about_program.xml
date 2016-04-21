@@ -23,15 +23,26 @@
         android:theme="@style/Font_App_Styles"
         android:id="@+id/textView_about_program_1"/>
 
-    <Button
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_menu"
-        android:id="@+id/button5"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:onClick="back_to_menu"
-        android:background="@drawable/round"
+        android:id="@+id/imageView"
+        android:scaleType="fitXY"
+        android:src="@drawable/histogram_read"
         android:layout_below="@+id/textView_about_program_1"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <!-- <Button
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/back_to_menu"
+          android:id="@+id/button5"
+          android:theme="@style/Font_App_Button_Styles"
+          android:layout_marginTop="@dimen/activity_horizontal_margin"
+          android:onClick="back_to_menu"
+          android:background="@drawable/button_style"
+          android:layout_below="@+id/textView_about_program_1"
+          android:layout_centerHorizontal="true" />-->
 </RelativeLayout>
 </ScrollView>

@@ -4,17 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
+    android:id="@+id/relativeLayout_main"
     android:focusableInTouchMode="true"
     android:background="@color/background_main"
     android:descendantFocusability="beforeDescendants"
     tools:context="com.example.android.histogram.Main">
 
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -27,36 +22,24 @@
         tools:context="com.example.android.histogram.Main"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout"
-        android:layout_below="@+id/edit_text_main">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:text="@string/Hello_enter"
-        android:theme="@style/Font_App_Styles"
-        android:id="@+id/textView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/relativeLayout">
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:hint="@string/Name_label"
-        android:singleLine="true"
-        android:windowSoftInputMode="stateHidden"
-        android:textSize="@dimen/text_height"
-        android:maxLength="16"
-        android:id="@+id/edit_text_main"
-        android:background="@color/button_grad_end"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_marginTop="@dimen/content_horizontal_margin"
+            android:hint="@string/Name_label"
+            android:singleLine="true"
+            android:windowSoftInputMode="stateHidden"
+            android:textSize="@dimen/text_height"
+            android:maxLength="16"
+            android:id="@+id/edit_text_main"
+            android:background="@color/button_grad_end"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
 
 
@@ -64,14 +47,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/start_button"
-            android:layout_marginBottom="@dimen/between_button"
-            android:layout_marginTop="@dimen/between_button"
-            android:background="@drawable/round"
-            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/button_style"
             android:id="@+id/button"
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClick_histogram"
-            android:layout_below="@+id/edit_text_main"
+            android:layout_above="@+id/button3"
+            android:layout_marginBottom="@dimen/between_button"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
@@ -79,22 +60,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/About_program"
-            android:layout_marginBottom="@dimen/between_button"
-            android:background="@drawable/round"
-            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/button_style"
             android:id="@+id/button3"
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClick_about_program"
-            android:layout_below="@+id/button"
+            android:layout_above="@+id/textView3"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <Button
+        <!-- <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/exit"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:background="@drawable/round"
+            android:background="@drawable/button_style"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:id="@+id/button2"
@@ -102,24 +80,21 @@
             android:theme="@style/Font_App_Button_Styles"
             android:layout_below="@+id/button3"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true" />-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/all_little_strings"
-            android:layout_below="@+id/button2"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/who_am_i"
             android:textColor="@color/main_text_color"
             android:textSize="@dimen/all_little_strings"
             android:id="@+id/textView3"
+            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/button2"
-            android:layout_alignEnd="@+id/button2" />
-
-
+            android:layout_alignRight="@+id/button3"
+            android:layout_alignEnd="@+id/button3"
+            android:layout_marginBottom="@dimen/between_button"/>
     </RelativeLayout>
-</ScrollView>
 </RelativeLayout>
 

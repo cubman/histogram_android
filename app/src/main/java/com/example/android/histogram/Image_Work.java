@@ -46,6 +46,10 @@ public class Image_Work {
         return  max;
     }
 
+  /*  public Bitmap resize_image(Bitmap old, int new_Height, int new_Width){
+
+    }*/
+
     private Bitmap build_histogram(Bitmap bm_return) {
         int max = find_max_height();
         int height = bm_return.getHeight();

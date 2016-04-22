@@ -20,7 +20,8 @@
                                       The horizontal axis of the graph represents the tonal variations, while the vertical axis represents
                                       the number of pixels in that particular tone. The left side of the horizontal axis represents the black
                                       and dark areas, the middle represents medium grey and the right hand
-                                      side represents light and pure white areas. </string>
+                                      side represents light and pure white areas. \n\n
+                                       1. Too dark\n 2. A little dark\n 3. Good expose\n 4. A little light\n 5. Too light</string>
     <string name="who_am_i">Developed by: Abramov Anatoly ©</string>
     <string name="incognito">Incognito</string>
 </resources>

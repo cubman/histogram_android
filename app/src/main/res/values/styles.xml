@@ -19,4 +19,5 @@
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:typeface">normal</item>
     </style>
+
 </resources>

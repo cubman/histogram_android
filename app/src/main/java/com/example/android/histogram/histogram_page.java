@@ -20,17 +20,20 @@ import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.*;
 import android.widget.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.TimeZone;
@@ -43,13 +46,13 @@ public class histogram_page extends AppCompatActivity {
     private Image_Work im;
     Bitmap bm_main, bm_histogram;
 
+    private List<Map.Entry<String, String>> colors = new LinkedList<>();
     private String user_name;
 
     Switch list_toggle;
     ImageView image1, image2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         try {
             super.onCreate(savedInstanceState);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -58,6 +61,8 @@ public class histogram_page extends AppCompatActivity {
             image1 = (ImageView) findViewById(R.id.image_view_main);
             image2 = (ImageView) findViewById(R.id.image_view_histogram);
 
+            colors.add(new AbstractMap.SimpleEntry<String, String>("#F5F5F5","#000000"));
+            colors.add(new AbstractMap.SimpleEntry<String, String>("#000000","#F5F5F5"));
 
             if (savedInstanceState != null) {
                 {
@@ -78,14 +83,23 @@ public class histogram_page extends AppCompatActivity {
             tw.setText(getString(R.string.user_name, user_name));
 
             list_toggle = (Switch) findViewById(R.id.switch1);
+
             list_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        image2.setVisibility(View.INVISIBLE);
-                    } else {
-                        image2.setVisibility(View.VISIBLE);
+                    if (bm_histogram != null) {
+                        bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
+                        im = new Image_Work(bm_main, R.color.background_main);
+                        if (isChecked)
+                            // image2.setVisibility(View.INVISIBLE);
+                            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(1).getKey(), colors.get(1).getValue());
+                        else
+                            // image2.setVisibility(View.VISIBLE);
+                            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
+                        image2.setImageBitmap(bm_histogram);
+
                     }
+
                 }
             });
         }
@@ -100,19 +114,26 @@ public class histogram_page extends AppCompatActivity {
         return l[new Random().nextInt(l.length)];
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
+
         savedInstanceState.putParcelable("selectedImage1", bm_main);
         savedInstanceState.putParcelable("selectedImage2", bm_histogram);
     }
 
     public void builing_hisogram(View v) {
+        if (bm_histogram == null)
         try {
             bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
             im = new Image_Work(bm_main, R.color.background_main);
 
-            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE);
+            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
+           // if (changed) {
+              //  id ^=1;
+            //    changed = false;
+           // }
             image2.setImageBitmap(bm_histogram);
         }
         catch (Exception e) {
@@ -157,6 +178,7 @@ public class histogram_page extends AppCompatActivity {
 
                 image1.setImageBitmap(bm_main);
                 image2.setImageBitmap(bm_histogram = null);
+                list_toggle.setChecked(false);
             }
         }
         catch(Exception e){

@@ -28,12 +28,12 @@ public class Image_Work {
             }
     }
 
-    public Bitmap get_gitogram(int heigh, int width) {
+    public Bitmap get_gitogram(int heigh, int width, String Back_color, String Histogram_color) {
         Bitmap bm_return = Bitmap.createBitmap(heigh, width, Bitmap.Config.ARGB_8888);
 
         count_histogram();
 
-        return  build_histogram(bm_return);
+        return  build_histogram(bm_return, Back_color, Histogram_color);
     }
 
     private int find_max_height() {
@@ -50,22 +50,23 @@ public class Image_Work {
 
     }*/
 
-    private Bitmap build_histogram(Bitmap bm_return) {
+
+    private Bitmap build_histogram(Bitmap bm_return, String Back_color, String Histogram_color) {
         int max = find_max_height();
         int height = bm_return.getHeight();
         int width = bm_return.getWidth();
 
         int step = width / colors_count;
-        bm_return.eraseColor(Color.parseColor("#F5F5F5"));
+        bm_return.eraseColor(Color.parseColor(Back_color));
         Matrix matrix = new Matrix();
         Canvas c = new Canvas(bm_return);
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        p.setColor(Color.BLACK);
+        p.setColor(Color.parseColor(Histogram_color));
 
 
         for (int i = 0; i < colors_count; ++i)
-            c.drawRect(i * step, 2, (1 + i) * step, (height * main_rgb[i]) / max, p);
+            c.drawRect(i * step, 0, (1 + i) * step, (height * main_rgb[i]) / max, p);
 
         matrix.preScale(-1, 1);
         matrix.postRotate(180, width, height / 2);

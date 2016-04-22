@@ -7,7 +7,7 @@
     <string name="user_name">Hello, %1$s!</string>
     <string name="back_to_menu">Back</string>
     <string name="gallery">Gallery</string>
-    <string name="histogram_activation">Histogram deactivation</string>
+    <string name="histogram_activation">Colors reverse</string>
     <string name="build_histogram">Build</string>
     <string name="About_program">About</string>
     <string name="About_program_enter">Welcome, %1$s!\n\n

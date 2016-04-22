@@ -22,9 +22,8 @@
         tools:context="com.example.android.histogram.Main"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/relativeLayout"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/textView3">
+        android:layout_above="@+id/owner_name">
 
 
 
@@ -50,10 +49,10 @@
             android:layout_height="wrap_content"
             android:text="@string/start_button"
             android:background="@color/button_color"
-            android:id="@+id/button"
+            android:id="@+id/button_start_program"
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClick_histogram"
-            android:layout_above="@+id/button3"
+            android:layout_above="@+id/button_about_program"
             android:layout_marginBottom="@dimen/between_button"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -63,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="@string/About_program"
             android:background="@color/button_color"
-            android:id="@+id/button3"
+            android:id="@+id/button_about_program"
             android:layout_marginBottom="@dimen/between_button"
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClick_about_program"
@@ -94,7 +93,7 @@
         android:text="@string/who_am_i"
         android:textColor="@color/main_text_color"
         android:textSize="@dimen/all_little_strings"
-        android:id="@+id/textView3"
+        android:id="@+id/owner_name"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

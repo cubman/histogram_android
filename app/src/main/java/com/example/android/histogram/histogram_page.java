@@ -81,7 +81,7 @@ public class histogram_page extends AppCompatActivity {
             }
             user_name = getIntent().getStringExtra("user_name");
 
-            TextView tw = (TextView) findViewById(R.id.textView2);
+            TextView tw = (TextView) findViewById(R.id.welcome_user_1);
             tw.setText(getString(R.string.user_name, user_name));
 
             list_toggle = (Switch) findViewById(R.id.switch1);

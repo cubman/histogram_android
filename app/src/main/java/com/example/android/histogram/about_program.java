@@ -16,7 +16,7 @@ public class about_program extends AppCompatActivity {
 
         user_name = getIntent().getStringExtra("user_name");
 
-        TextView tw = (TextView) findViewById(R.id.textView_about_program_1);
+        TextView tw = (TextView) findViewById(R.id.welcome_user_2);
         tw.setText(getString(R.string.About_program_enter, user_name));
     }
 

@@ -40,11 +40,11 @@ import java.util.TimeZone;
 
 public class histogram_page extends AppCompatActivity {
 
-    private static final int GALLERY_REQUEST = 1;
-    private static final  int IMAGE_SIZE = 512;
+    private static final int GALLERY_REQUEST = 1; // флаг запроса
+    private static final  int IMAGE_SIZE = 512;   // размер изображения гистограммы
 
-    private Image_Work im;
-    Bitmap bm_main, bm_histogram;
+    private Image_Work im;                        // класс для работы с изображениями
+    Bitmap bm_main, bm_histogram, original_image, negative_image;
 
     private List<Map.Entry<String, String>> colors = new LinkedList<>();
     private String user_name;
@@ -68,6 +68,8 @@ public class histogram_page extends AppCompatActivity {
                 {
                     bm_main = savedInstanceState.getParcelable("selectedImage1");
                     bm_histogram = savedInstanceState.getParcelable("selectedImage2");
+                    original_image = savedInstanceState.getParcelable("selectedImage_original");
+                    negative_image = savedInstanceState.getParcelable("selectedImage_negative");
                 }
                 image1.setImageBitmap(bm_main);
                 image2.setImageBitmap(bm_histogram);
@@ -92,10 +94,10 @@ public class histogram_page extends AppCompatActivity {
                         im = new Image_Work(bm_main, R.color.background_main);
                         if (isChecked)
                             // image2.setVisibility(View.INVISIBLE);
-                            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(1).getKey(), colors.get(1).getValue());
+                            bm_histogram = negative_image;
                         else
                             // image2.setVisibility(View.VISIBLE);
-                            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
+                            bm_histogram = original_image;
                         image2.setImageBitmap(bm_histogram);
 
                     }
@@ -108,6 +110,7 @@ public class histogram_page extends AppCompatActivity {
         }
     }
 
+    // возвращает произвольную фоторафию из списка содержимого
     private int get_ramdom_image() {
         int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
 
@@ -121,19 +124,21 @@ public class histogram_page extends AppCompatActivity {
 
         savedInstanceState.putParcelable("selectedImage1", bm_main);
         savedInstanceState.putParcelable("selectedImage2", bm_histogram);
+        savedInstanceState.putParcelable("selectedImage_original", original_image);
+        savedInstanceState.putParcelable("selectedImage_negative", negative_image);
     }
 
+    // рисует гистограмму
     public void builing_hisogram(View v) {
         if (bm_histogram == null)
         try {
             bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
             im = new Image_Work(bm_main, R.color.background_main);
 
-            bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
-           // if (changed) {
-              //  id ^=1;
-            //    changed = false;
-           // }
+            original_image = bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
+            negative_image = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(1).getKey(), colors.get(1).getValue());
+
+
             image2.setImageBitmap(bm_histogram);
         }
         catch (Exception e) {
@@ -157,7 +162,7 @@ public class histogram_page extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       // super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         try {
             if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
@@ -171,7 +176,6 @@ public class histogram_page extends AppCompatActivity {
                     options.inSampleSize = 4;
                     bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
                 }
-
 
                 if (bm_main == null)
                     Toast.makeText(this, "Image wan't dowloaded!", Toast.LENGTH_SHORT).show();

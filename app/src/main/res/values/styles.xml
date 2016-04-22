@@ -9,13 +9,14 @@
     </style>
 
     <style name="Font_App_Button_Styles">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/button_text_height</item>
         <item name="android:textColor">@color/button_text_color</item>
         <item name="android:typeface">monospace</item>
+        <item name="android:color">@color/button_color</item>
     </style>
 
     <style name="Font_App_Styles">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/text_height</item>
         <item name="android:textColor">@color/main_text_color</item>
         <item name="android:typeface">normal</item>
     </style>

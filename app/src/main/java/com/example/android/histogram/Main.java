@@ -31,7 +31,7 @@ public class Main extends AppCompatActivity {
         String user_name = new String();
         return user_name;
     }*/
-
+// получаем имя пользователя
     private String get_user_name() {
         String user_name;
 
@@ -40,7 +40,7 @@ public class Main extends AppCompatActivity {
 
         return user_name;
     }
-
+// для старта построения гистограммы
     public void onClick_histogram(View v) {
         Intent intent = new Intent(Main.this,
                 histogram_page.class);
@@ -49,7 +49,7 @@ public class Main extends AppCompatActivity {
 
         startActivityForResult(intent, 0);
     }
-
+// при запуске о программе
     public void onClick_about_program(View v) {
         Intent intent = new Intent(Main.this,
                 about_program.class);
@@ -59,6 +59,7 @@ public class Main extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    // выход
     public void ExitClick(View v) {
         System.exit(0);
     }

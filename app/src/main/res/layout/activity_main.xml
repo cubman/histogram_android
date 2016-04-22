@@ -31,7 +31,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="3dp"
+            android:padding="@dimen/ground_text_size"
             android:layout_marginTop="@dimen/content_horizontal_margin"
             android:hint="@string/Name_label"
             android:singleLine="true"
@@ -39,7 +39,7 @@
             android:textSize="@dimen/text_height"
             android:maxLength="16"
             android:id="@+id/edit_text_main"
-            android:background="@color/button_grad_end"
+            android:background="@color/text_edit_color"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/start_button"
-            android:background="@drawable/button_style"
+            android:background="@color/button_color"
             android:id="@+id/button"
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClick_histogram"
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/About_program"
-            android:background="@drawable/button_style"
+            android:background="@color/button_color"
             android:id="@+id/button3"
             android:layout_marginBottom="@dimen/between_button"
             android:theme="@style/Font_App_Button_Styles"

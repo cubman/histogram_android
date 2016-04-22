@@ -22,8 +22,7 @@
         android:id="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-/>
+        android:layout_alignParentTop="true"/>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,7 +53,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="@dimen/image_height"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_main"
             />
@@ -65,12 +64,13 @@
             android:text="@string/histogram_activation"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/text_height"
             android:id="@+id/switch1"
             android:layout_gravity="center_horizontal" />
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="@dimen/image_height"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_histogram"
             />
@@ -93,9 +93,9 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/between_button"
         android:text="@string/gallery"
+        android:background="@color/button_color"
         android:onClick="load_picture_from_gallary"
         android:id="@+id/galerry"
-        android:background="@drawable/button_style"
         android:theme="@style/Font_App_Button_Styles"
         android:layout_above="@+id/button3"
         android:layout_weight="1" />
@@ -106,7 +106,7 @@
         android:text="@string/build_histogram"
         android:id="@+id/button3"
         android:layout_marginLeft="@dimen/between_button"
-        android:background="@drawable/button_style"
+        android:background="@color/button_color"
         android:theme="@style/Font_App_Button_Styles"
         android:onClick="builing_hisogram"
         android:layout_gravity="right"

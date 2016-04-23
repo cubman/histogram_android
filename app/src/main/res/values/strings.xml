@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HistogROID</string>
+    <string name="app_name">HistoDROID</string>
     <string name="start_button">Start</string>
     <string name="Histogram_title">Paint hostogram</string>
     <string name="exit">Exit</string>

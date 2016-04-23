@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -41,7 +42,8 @@ import java.util.TimeZone;
 public class histogram_page extends AppCompatActivity {
 
     private static final int GALLERY_REQUEST = 1; // флаг запроса
-    private static final  int IMAGE_SIZE = 512;   // размер изображения гистограммы
+    private static final  int IMAGE_SIZE_WIDTH = 512;   // размер изображения гистограммы
+    private static final  int IMAGE_SIZE_HEIGHT = (int)(IMAGE_SIZE_WIDTH * 0.75);
 
     private Image_Work im;                        // класс для работы с изображениями
     Bitmap bm_main, bm_histogram, original_image, negative_image;
@@ -56,10 +58,17 @@ public class histogram_page extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
             setContentView(R.layout.activity_histogram_page);
+
 
             image1 = (ImageView) findViewById(R.id.image_view_main);
             image2 = (ImageView) findViewById(R.id.image_view_histogram);
+
+            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
+                image2.getLayoutParams().height = (int)getResources().getDimension(R.dimen.image_height);
+                image2.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            };
 
             colors.add(new AbstractMap.SimpleEntry<String, String>("#F5F5F5","#000000"));
             colors.add(new AbstractMap.SimpleEntry<String, String>("#000000","#F5F5F5"));
@@ -135,8 +144,8 @@ public class histogram_page extends AppCompatActivity {
             bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
             im = new Image_Work(bm_main, R.color.background_main);
 
-            original_image = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
-            negative_image = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(1).getKey(), colors.get(1).getValue());
+            original_image = im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, colors.get(0).getKey(), colors.get(0).getValue());
+            negative_image = im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, colors.get(1).getKey(), colors.get(1).getValue());
 
             if (list_toggle.isChecked())
                 bm_histogram = negative_image;
@@ -175,13 +184,13 @@ public class histogram_page extends AppCompatActivity {
                 bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
 
 
-              if (bm_main.getHeight() > 1500 || bm_main.getWidth() > 1500) {
+              if (bm_main.getHeight() > 1000 || bm_main.getWidth() > 1000) {
                     options.inSampleSize = 4;
                     bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
                 }
 
                 if (bm_main == null)
-                    Toast.makeText(this, "Image wan't dowloaded!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Image wasn't dowloaded!", Toast.LENGTH_SHORT).show();
 
                 image1.setImageBitmap(bm_main);
                 image2.setImageBitmap(bm_histogram = null);

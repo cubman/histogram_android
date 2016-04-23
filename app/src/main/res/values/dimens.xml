@@ -13,7 +13,7 @@
     <dimen name="text_height">16dp</dimen>
     <dimen name="button_text_height">18dp</dimen>
 
-    <dimen name="hisogram_activity_horizontal_margin">3dp</dimen>
+    <dimen name="hisogram_activity_horizontal_margin">7dp</dimen>
     <dimen name="around_main_border">3dp</dimen>
     <dimen name="ground_text_size">3dp</dimen>
 

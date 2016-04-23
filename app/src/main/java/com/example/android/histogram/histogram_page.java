@@ -135,9 +135,12 @@ public class histogram_page extends AppCompatActivity {
             bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
             im = new Image_Work(bm_main, R.color.background_main);
 
-            original_image = bm_histogram = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
+            original_image = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(0).getKey(), colors.get(0).getValue());
             negative_image = im.get_gitogram(IMAGE_SIZE, IMAGE_SIZE, colors.get(1).getKey(), colors.get(1).getValue());
 
+            if (list_toggle.isChecked())
+                bm_histogram = negative_image;
+            else bm_histogram = original_image;
 
             image2.setImageBitmap(bm_histogram);
         }
@@ -182,7 +185,6 @@ public class histogram_page extends AppCompatActivity {
 
                 image1.setImageBitmap(bm_main);
                 image2.setImageBitmap(bm_histogram = null);
-                list_toggle.setChecked(false);
             }
         }
         catch(Exception e){

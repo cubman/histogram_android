@@ -7,6 +7,10 @@
     android:id="@+id/relativeLayout_main"
     android:focusableInTouchMode="true"
     android:background="@color/background_main"
+    android:paddingBottom="@dimen/around_main_border"
+    android:paddingLeft="@dimen/around_main_border"
+    android:paddingRight="@dimen/around_main_border"
+    android:paddingTop="@dimen/around_main_border"
     android:descendantFocusability="beforeDescendants"
     tools:context="com.example.android.histogram.Main">
 

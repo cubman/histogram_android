@@ -42,8 +42,10 @@ import java.util.TimeZone;
 public class histogram_page extends AppCompatActivity {
 
     private static final int GALLERY_REQUEST = 1; // флаг запроса
-    private static final  int IMAGE_SIZE_WIDTH = 512;   // размер изображения гистограммы
-    private static final  int IMAGE_SIZE_HEIGHT = (int)(IMAGE_SIZE_WIDTH * 0.75);
+    private  int IMAGE_SIZE_WIDTH ;
+    private  int IMAGE_SIZE_HEIGHT;
+    private  int MAIN_IMAGE_HEIGHT;
+    private  int MAIN_IMAGE_WIDTH;
 
     private Image_Work im;                        // класс для работы с изображениями
     Bitmap bm_main, bm_histogram, original_image, negative_image;
@@ -61,6 +63,11 @@ public class histogram_page extends AppCompatActivity {
 
             setContentView(R.layout.activity_histogram_page);
 
+            IMAGE_SIZE_WIDTH = getResources().getInteger(R.integer.histogram_width);
+            IMAGE_SIZE_HEIGHT = (int)(IMAGE_SIZE_WIDTH * 0.75);
+
+            MAIN_IMAGE_HEIGHT = getResources().getInteger(R.integer.main_inmage_max_height);
+            MAIN_IMAGE_WIDTH = getResources().getInteger(R.integer.main_inmage_max_widtht);
 
             image1 = (ImageView) findViewById(R.id.image_view_main);
             image2 = (ImageView) findViewById(R.id.image_view_histogram);
@@ -184,9 +191,9 @@ public class histogram_page extends AppCompatActivity {
                 bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
 
 
-              if (bm_main.getHeight() > 1000 || bm_main.getWidth() > 1000) {
-                    options.inSampleSize = 4;
-                    bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+              if (bm_main.getHeight() > MAIN_IMAGE_HEIGHT || bm_main.getWidth() > MAIN_IMAGE_WIDTH) {
+                    options.inSampleSize = getResources().getInteger(R.integer.image_scale);
+                   bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
                 }
 
                 if (bm_main == null)

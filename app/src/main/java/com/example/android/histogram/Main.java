@@ -47,7 +47,7 @@ public class Main extends AppCompatActivity {
 
         intent.putExtra("user_name", get_user_name());
 
-        startActivityForResult(intent, 0);
+        startActivity(intent);
     }
 // при запуске о программе
     public void onClick_about_program(View v) {
@@ -56,7 +56,7 @@ public class Main extends AppCompatActivity {
 
         intent.putExtra("user_name", get_user_name());
 
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     // выход

@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusable="true"
-    android:id="@+id/relativeLayout_main"
-    android:focusableInTouchMode="true"
-    android:background="@color/background_main"
-    android:paddingBottom="@dimen/around_main_border"
-    android:paddingLeft="@dimen/around_main_border"
-    android:paddingRight="@dimen/around_main_border"
-    android:paddingTop="@dimen/around_main_border"
-    android:descendantFocusability="beforeDescendants"
-    tools:context="com.example.android.histogram.Main">
-
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -26,8 +10,7 @@
         tools:context="com.example.android.histogram.Main"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/owner_name">
+        android:layout_alignParentTop="true">
 
 
 
@@ -40,7 +23,7 @@
             android:singleLine="true"
             android:windowSoftInputMode="stateHidden"
             android:textSize="@dimen/text_height"
-            android:maxLength="16"
+            android:maxLength="@integer/text_view_max_length"
             android:id="@+id/edit_text_main"
             android:background="@color/text_edit_color"
             android:layout_alignParentLeft="true"
@@ -58,8 +41,8 @@
             android:onClick="onClick_histogram"
             android:layout_above="@+id/button_about_program"
             android:layout_marginBottom="@dimen/between_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:layout_width="match_parent"
@@ -67,28 +50,12 @@
             android:text="@string/About_program"
             android:background="@color/button_color"
             android:id="@+id/button_about_program"
-            android:layout_marginBottom="@dimen/between_button"
             android:theme="@style/Font_App_Button_Styles"
+            android:layout_marginBottom="@dimen/between_button"
             android:onClick="onClick_about_program"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/owner_name"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-
-        <!-- <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/exit"
-            android:background="@drawable/button_style"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:id="@+id/button2"
-            android:onClick="ExitClick"
-            android:theme="@style/Font_App_Button_Styles"
-            android:layout_below="@+id/button3"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />-->
-
-    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -101,5 +68,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-</RelativeLayout>
+    </RelativeLayout>
+
+
 

@@ -10,14 +10,14 @@
 
     <dimen name="between_button">25dp</dimen>
 
-    <dimen name="text_height">16dp</dimen>
-    <dimen name="button_text_height">18dp</dimen>
+    <dimen name="text_height">17sp</dimen>
+    <dimen name="button_text_height">19sp</dimen>
 
     <dimen name="hisogram_activity_horizontal_margin">7dp</dimen>
-    <dimen name="around_main_border">3dp</dimen>
-    <dimen name="ground_text_size">3dp</dimen>
+    <dimen name="around_main_border">4dp</dimen>
+    <dimen name="ground_text_size">3sp</dimen>
 
-    <dimen name="all_little_strings">15dp</dimen>
+    <dimen name="all_little_strings">15sp</dimen>
 
     <dimen name="image_height">230dp</dimen>
 </resources>

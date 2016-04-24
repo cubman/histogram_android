@@ -72,7 +72,7 @@ public class Image_Work {
             c.drawRect(i * step, 0, (1 + i) * step, (height * main_rgb[i]) / max, p);
 
         matrix.preScale(-1, 1);
-        matrix.postRotate(180, width, height / 2);
+        matrix.postRotate(180, width/2, height/2);
         bm_return = Bitmap.createBitmap(bm_return, 0,0,width, height, matrix, false);
         bm_return.setDensity(DisplayMetrics.DENSITY_DEFAULT);
         return bm_return;

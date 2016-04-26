@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">HistoDROID</string>
     <string name="start_button">Start</string>
-    <string name="Histogram_title">Draw hostogram</string>
+    <string name="Histogram_title">Draw histogram</string>
     <string name="exit">Exit</string>
     <string name="Name_label">Please, enter your name...</string>
     <string name="user_name">Hello, %1$s!</string>

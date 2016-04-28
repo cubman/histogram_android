@@ -39,7 +39,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.TimeZone;
 
-public class histogram_page extends AppCompatActivity {
+public class HistogramPage extends AppCompatActivity {
 
     private static final int GALLERY_REQUEST = 1; // флаг запроса
     private  int IMAGE_SIZE_WIDTH ;
@@ -47,7 +47,7 @@ public class histogram_page extends AppCompatActivity {
     private  int MAIN_IMAGE_HEIGHT;
     private  int MAIN_IMAGE_WIDTH;
 
-    private Image_Work im;                        // класс для работы с изображениями
+    private ImageWork im;                        // класс для работы с изображениями
     Bitmap bm_main, bm_histogram, original_image, negative_image;
 
     private List<Map.Entry<String, String>> colors = new LinkedList<>();
@@ -91,7 +91,7 @@ public class histogram_page extends AppCompatActivity {
                 image2.setImageBitmap(bm_histogram);
             }
             else {
-                bm_main = BitmapFactory.decodeResource(getResources(), get_ramdom_image());
+                bm_main = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
                 image1.setImageBitmap(bm_main);
                 image2.setImageDrawable(null);
             }
@@ -107,7 +107,7 @@ public class histogram_page extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (bm_histogram != null) {
                         bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
-                        im = new Image_Work(bm_main, R.color.background_main);
+                        im = new ImageWork(bm_main, R.color.background_main);
                         if (isChecked)
                             // image2.setVisibility(View.INVISIBLE);
                             bm_histogram = negative_image;
@@ -127,7 +127,7 @@ public class histogram_page extends AppCompatActivity {
     }
 
     // возвращает произвольную фоторафию из списка содержимого
-    private int get_ramdom_image() {
+    private int GetRamdomImage() {
         int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
 
         return l[new Random().nextInt(l.length)];
@@ -145,11 +145,11 @@ public class histogram_page extends AppCompatActivity {
     }
 
     // рисует гистограмму
-    public void builing_hisogram(View v) {
+    public void BuilingHisogram(View v) {
         if (bm_histogram == null)
         try {
             bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
-            im = new Image_Work(bm_main, R.color.background_main);
+            im = new ImageWork(bm_main, R.color.background_main);
 
             original_image = im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, colors.get(0).getKey(), colors.get(0).getValue());
             negative_image = im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, colors.get(1).getKey(), colors.get(1).getValue());
@@ -172,7 +172,7 @@ public class histogram_page extends AppCompatActivity {
     }*/
 
     // Загрузка изображения из галереи
-    public void load_picture_from_gallary(View v) {
+    public void LoadPictureFromGallary(View v) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GALLERY_REQUEST);

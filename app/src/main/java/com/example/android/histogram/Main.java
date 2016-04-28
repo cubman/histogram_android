@@ -32,7 +32,7 @@ public class Main extends AppCompatActivity {
         return user_name;
     }*/
 // получаем имя пользователя
-    private String get_user_name() {
+    private String GetUserName() {
         String user_name;
 
         if ((user_name = getEditText.getText().toString()).matches(""))
@@ -41,20 +41,20 @@ public class Main extends AppCompatActivity {
         return user_name;
     }
 // для старта построения гистограммы
-    public void onClick_histogram(View v) {
+    public void onClickHistogram(View v) {
         Intent intent = new Intent(Main.this,
-                histogram_page.class);
+                HistogramPage.class);
 
-        intent.putExtra("user_name", get_user_name());
+        intent.putExtra("user_name", GetUserName());
 
         startActivity(intent);
     }
 // при запуске о программе
-    public void onClick_about_program(View v) {
+    public void onClickAboutProgram(View v) {
         Intent intent = new Intent(Main.this,
-                about_program.class);
+                AboutProgram.class);
 
-        intent.putExtra("user_name", get_user_name());
+        intent.putExtra("user_name", GetUserName());
 
         startActivity(intent);
     }

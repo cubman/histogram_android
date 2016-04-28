@@ -11,17 +11,17 @@ import java.util.Vector;
 /**
  * Created by Анатолий on 17.04.2016.
  */
-public class Image_Work {
+public class ImageWork {
     private final int colors_count = 256;
 
     private Bitmap bm;
     private int color;
     private int[] main_rgb = new int[colors_count];
 
-    public  Image_Work(Bitmap bm, int c) {this.bm = bm; this.color = c;}
+    public  ImageWork(Bitmap bm, int c) {this.bm = bm; this.color = c;}
 
     // подсчитывает статистические данные по изображению
-    private void count_histogram() {
+    private void CountHistogram() {
         for (int i = 0; i < bm.getHeight(); ++i)
             for (int j = 0;j <bm.getWidth();++j) {
                 int pic = bm.getPixel(j, i);
@@ -33,13 +33,13 @@ public class Image_Work {
     public Bitmap get_gitogram(int heigh, int width, String Back_color, String Histogram_color) {
         Bitmap bm_return = Bitmap.createBitmap(heigh, width, Bitmap.Config.ARGB_8888);
 
-        count_histogram();
+        CountHistogram();
 
-        return  build_histogram(bm_return, Back_color, Histogram_color);
+        return  BuildHistogram(bm_return, Back_color, Histogram_color);
     }
 
     // найти самый высокий пик
-    private int find_max_height() {
+    private int FindMaxHeight() {
         int max = -Integer.MAX_VALUE;
 
         for (int i = 0; i < colors_count; ++i)
@@ -54,8 +54,8 @@ public class Image_Work {
     }*/
 
 // строит изобраение, которое будет подходящим для image view
-    private Bitmap build_histogram(Bitmap bm_return, String Back_color, String Histogram_color) {
-        int max = find_max_height();
+    private Bitmap BuildHistogram(Bitmap bm_return, String Back_color, String Histogram_color) {
+        int max = FindMaxHeight();
         int height = bm_return.getHeight();
         int width = bm_return.getWidth();
 

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class about_program extends AppCompatActivity {
+public class AboutProgram extends AppCompatActivity {
         String user_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class about_program extends AppCompatActivity {
     }
 
     // Кнопка "назад"
-    public void back_to_menu(View v) {
+    public void BbackToMenu(View v) {
         finish();
         super.onBackPressed();
     }

@@ -17,11 +17,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".histogram_page"
+            android:name=".HistogramPage"
             android:label="@string/Histogram_title">
             >
         </activity>
-        <activity android:name=".about_program"
+        <activity android:name=".AboutProgram"
             android:label="@string/About_program"></activity>
     </application>
 

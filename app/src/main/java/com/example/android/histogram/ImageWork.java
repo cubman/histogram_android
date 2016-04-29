@@ -12,20 +12,20 @@ import java.util.Vector;
  * Created by Анатолий on 17.04.2016.
  */
 public class ImageWork {
-    private final int colors_count = 256;
+    private final int ColorsCount = 256;
 
-    private Bitmap bm;
+    private Bitmap Bm;
     private int color;
-    private int[] main_rgb = new int[colors_count];
+    private int[] MainRgb = new int[ColorsCount];
 
-    public  ImageWork(Bitmap bm, int c) {this.bm = bm; this.color = c;}
+    public  ImageWork(Bitmap Bm, int c) {this.Bm = Bm; this.color = c;}
 
     // подсчитывает статистические данные по изображению
     private void CountHistogram() {
-        for (int i = 0; i < bm.getHeight(); ++i)
-            for (int j = 0;j <bm.getWidth();++j) {
-                int pic = bm.getPixel(j, i);
-                ++main_rgb[(int) (0.3 * Color.red(pic) + 0.59 * Color.green(pic) + 0.11 * Color.blue(pic))];
+        for (int i = 0; i < Bm.getHeight(); ++i)
+            for (int j = 0;j <Bm.getWidth();++j) {
+                int pic = Bm.getPixel(j, i);
+                ++MainRgb[(int) (0.3 * Color.red(pic) + 0.59 * Color.green(pic) + 0.11 * Color.blue(pic))];
             }
     }
 
@@ -42,9 +42,9 @@ public class ImageWork {
     private int FindMaxHeight() {
         int max = -Integer.MAX_VALUE;
 
-        for (int i = 0; i < colors_count; ++i)
-            if (max < main_rgb[i])
-                max = main_rgb[i];
+        for (int i = 0; i < ColorsCount; ++i)
+            if (max < MainRgb[i])
+                max = MainRgb[i];
 
         return  max;
     }
@@ -59,7 +59,7 @@ public class ImageWork {
         int height = bm_return.getHeight();
         int width = bm_return.getWidth();
 
-        int step = width / colors_count;
+        int step = width / ColorsCount;
         bm_return.eraseColor(Color.parseColor(Back_color));
         Matrix matrix = new Matrix();
         Canvas c = new Canvas(bm_return);
@@ -68,8 +68,8 @@ public class ImageWork {
         p.setColor(Color.parseColor(Histogram_color));
 
 
-        for (int i = 0; i < colors_count; ++i)
-            c.drawRect(i * step, 0, (1 + i) * step, (height * main_rgb[i]) / max, p);
+        for (int i = 0; i < ColorsCount; ++i)
+            c.drawRect(i * step, 0, (1 + i) * step, (height * MainRgb[i]) / max, p);
 
         matrix.preScale(-1, 1);
         matrix.postRotate(180, width/2, height/2);

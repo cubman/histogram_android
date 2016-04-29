@@ -24,4 +24,8 @@
                                        1. Too dark\n 2. A little dark\n 3. Good expose\n 4. A little light\n 5. Too light</string>
     <string name="who_am_i">Developed by: Abramov Anatoly ©</string>
     <string name="incognito">Incognito</string>
+    <string name="data_downloading_problem">Some problem with downloading</string>
+    <string name="histogram_downloading_problem">Some problem with histogram</string>
+    <string name="image_was_not_downloaded">Image wasn\'t downloaded</string>
+    <string name="gallery_problem">There\'s a problem in gallery</string>
 </resources>

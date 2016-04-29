@@ -24,4 +24,8 @@
 
     <string name="who_am_i">Разработал: Абрамов Анатолий ©</string>
     <string name="incognito">Инкогнито</string>
+    <string name="data_downloading_problem">При загрузке формы обнаружены проблемы</string>
+    <string name="histogram_downloading_problem">Ошибка при постороении гистограммы</string>
+    <string name="image_was_not_downloaded">Изображение не было загружено</string>
+    <string name="gallery_problem">Обнаружена проблема в галерее</string>
 </resources>

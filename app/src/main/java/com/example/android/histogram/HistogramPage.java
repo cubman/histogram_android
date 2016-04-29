@@ -47,14 +47,14 @@ public class HistogramPage extends AppCompatActivity {
     private  int MAIN_IMAGE_HEIGHT;
     private  int MAIN_IMAGE_WIDTH;
 
-    private ImageWork im;                        // класс для работы с изображениями
-    Bitmap bm_main, bm_histogram, original_image, negative_image;
+    private ImageWork Im;                        // класс для работы с изображениями
+    Bitmap BmMain, BmHistogram, OriginalImage, NegativeImage;
 
-    private List<Map.Entry<String, String>> colors = new LinkedList<>();
-    private String user_name;
+    private List<Map.Entry<String, String>> Colors = new LinkedList<>();
+    private String UserName;
 
-    Switch list_toggle;
-    ImageView image1, image2;
+    Switch ListToggle;
+    ImageView Image1, Image2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -69,52 +69,52 @@ public class HistogramPage extends AppCompatActivity {
             MAIN_IMAGE_HEIGHT = getResources().getInteger(R.integer.main_inmage_max_height);
             MAIN_IMAGE_WIDTH = getResources().getInteger(R.integer.main_inmage_max_widtht);
 
-            image1 = (ImageView) findViewById(R.id.image_view_main);
-            image2 = (ImageView) findViewById(R.id.image_view_histogram);
+            Image1 = (ImageView) findViewById(R.id.image_view_main);
+            Image2 = (ImageView) findViewById(R.id.image_view_histogram);
 
             if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
-                image2.getLayoutParams().height = (int)getResources().getDimension(R.dimen.image_height);
-                image2.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                Image2.getLayoutParams().height = (int)getResources().getDimension(R.dimen.image_height);
+                Image2.setScaleType(ImageView.ScaleType.FIT_CENTER);
             };
 
-            colors.add(new AbstractMap.SimpleEntry<String, String>("#F5F5F5","#000000"));
-            colors.add(new AbstractMap.SimpleEntry<String, String>("#000000","#F5F5F5"));
+            Colors.add(new AbstractMap.SimpleEntry<String, String>("#F5F5F5","#000000"));
+            Colors.add(new AbstractMap.SimpleEntry<String, String>("#000000","#F5F5F5"));
 
             if (savedInstanceState != null) {
                 {
-                    bm_main = savedInstanceState.getParcelable("selectedImage1");
-                    bm_histogram = savedInstanceState.getParcelable("selectedImage2");
-                    original_image = savedInstanceState.getParcelable("selectedImage_original");
-                    negative_image = savedInstanceState.getParcelable("selectedImage_negative");
+                    BmMain = savedInstanceState.getParcelable("selectedImage1");
+                    BmHistogram = savedInstanceState.getParcelable("selectedImage2");
+                    OriginalImage = savedInstanceState.getParcelable("selectedImage_original");
+                    NegativeImage = savedInstanceState.getParcelable("selectedImage_negative");
                 }
-                image1.setImageBitmap(bm_main);
-                image2.setImageBitmap(bm_histogram);
+                Image1.setImageBitmap(BmMain);
+                Image2.setImageBitmap(BmHistogram);
             }
             else {
-                bm_main = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
-                image1.setImageBitmap(bm_main);
-                image2.setImageDrawable(null);
+                BmMain = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
+                Image1.setImageBitmap(BmMain);
+                Image2.setImageDrawable(null);
             }
-            user_name = getIntent().getStringExtra("user_name");
+            UserName = getIntent().getStringExtra("user_name");
 
             TextView tw = (TextView) findViewById(R.id.welcome_user_1);
-            tw.setText(getString(R.string.user_name, user_name));
+            tw.setText(getString(R.string.user_name, UserName));
 
-            list_toggle = (Switch) findViewById(R.id.switch1);
+            ListToggle = (Switch) findViewById(R.id.switch1);
 
-            list_toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ListToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (bm_histogram != null) {
-                        bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
-                        im = new ImageWork(bm_main, R.color.background_main);
+                    if (BmHistogram != null) {
+                        BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
+                        Im = new ImageWork(BmMain, R.color.background_main);
                         if (isChecked)
                             // image2.setVisibility(View.INVISIBLE);
-                            bm_histogram = negative_image;
+                            BmHistogram = NegativeImage;
                         else
                             // image2.setVisibility(View.VISIBLE);
-                            bm_histogram = original_image;
-                        image2.setImageBitmap(bm_histogram);
+                            BmHistogram = OriginalImage;
+                        Image2.setImageBitmap(BmHistogram);
 
                     }
 
@@ -122,7 +122,7 @@ public class HistogramPage extends AppCompatActivity {
             });
         }
         catch (Exception e) {
-            Toast.makeText(this, "Some problem dowloading datas", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.data_downloading_problem, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -138,30 +138,30 @@ public class HistogramPage extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putParcelable("selectedImage1", bm_main);
-        savedInstanceState.putParcelable("selectedImage2", bm_histogram);
-        savedInstanceState.putParcelable("selectedImage_original", original_image);
-        savedInstanceState.putParcelable("selectedImage_negative", negative_image);
+        savedInstanceState.putParcelable("selectedImage1", BmMain);
+        savedInstanceState.putParcelable("selectedImage2", BmHistogram);
+        savedInstanceState.putParcelable("selectedImage_original", OriginalImage);
+        savedInstanceState.putParcelable("selectedImage_negative", NegativeImage);
     }
 
     // рисует гистограмму
     public void BuilingHisogram(View v) {
-        if (bm_histogram == null)
+        if (BmHistogram == null)
         try {
-            bm_main = ((BitmapDrawable) image1.getDrawable()).getBitmap();
-            im = new ImageWork(bm_main, R.color.background_main);
+            BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
+            Im = new ImageWork(BmMain, R.color.background_main);
 
-            original_image = im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, colors.get(0).getKey(), colors.get(0).getValue());
-            negative_image = im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, colors.get(1).getKey(), colors.get(1).getValue());
+            OriginalImage = Im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, Colors.get(0).getKey(), Colors.get(0).getValue());
+            NegativeImage = Im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, Colors.get(1).getKey(), Colors.get(1).getValue());
 
-            if (list_toggle.isChecked())
-                bm_histogram = negative_image;
-            else bm_histogram = original_image;
+            if (ListToggle.isChecked())
+                BmHistogram = NegativeImage;
+            else BmHistogram = OriginalImage;
 
-            image2.setImageBitmap(bm_histogram);
+            Image2.setImageBitmap(BmHistogram);
         }
         catch (Exception e) {
-            Toast.makeText(this, "Histogram could be built", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -172,7 +172,7 @@ public class HistogramPage extends AppCompatActivity {
     }*/
 
     // Загрузка изображения из галереи
-    public void LoadPictureFromGallary(View v) {
+    public void LoadPictureFromGallery(View v) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
@@ -188,23 +188,23 @@ public class HistogramPage extends AppCompatActivity {
                 Uri uri = data.getData();
                 BitmapFactory.Options options = new BitmapFactory.Options();
 
-                bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
 
 
-              if (bm_main.getHeight() > MAIN_IMAGE_HEIGHT || bm_main.getWidth() > MAIN_IMAGE_WIDTH) {
+              if (BmMain.getHeight() > MAIN_IMAGE_HEIGHT || BmMain.getWidth() > MAIN_IMAGE_WIDTH) {
                     options.inSampleSize = getResources().getInteger(R.integer.image_scale);
-                   bm_main = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+                  BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
                 }
 
-                if (bm_main == null)
-                    Toast.makeText(this, "Image wasn't dowloaded!", Toast.LENGTH_SHORT).show();
+                if (BmMain == null)
+                    Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
 
-                image1.setImageBitmap(bm_main);
-                image2.setImageBitmap(bm_histogram = null);
+                Image1.setImageBitmap(BmMain);
+                Image2.setImageBitmap(BmHistogram = null);
             }
         }
         catch(Exception e){
-                Toast.makeText(this, "Some problem in gallery generating!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.gallery_problem, Toast.LENGTH_SHORT).show();
 
             }
         }

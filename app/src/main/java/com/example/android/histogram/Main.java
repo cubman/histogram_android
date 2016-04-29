@@ -33,12 +33,12 @@ public class Main extends AppCompatActivity {
     }*/
 // получаем имя пользователя
     private String GetUserName() {
-        String user_name;
+        String UserName;
 
-        if ((user_name = getEditText.getText().toString()).matches(""))
-            user_name = getString(R.string.incognito);
+        if ((UserName = getEditText.getText().toString()).matches(""))
+            UserName = getString(R.string.incognito);
 
-        return user_name;
+        return UserName;
     }
 // для старта построения гистограммы
     public void onClickHistogram(View v) {

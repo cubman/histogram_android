@@ -93,7 +93,7 @@
         android:layout_marginRight="@dimen/between_button"
         android:text="@string/gallery"
         android:background="@color/button_color"
-        android:onClick="LoadPictureFromGallary"
+        android:onClick="LoadPictureFromGallery"
         android:id="@+id/gallery"
         android:theme="@style/Font_App_Button_Styles"
         android:layout_above="@+id/button_build_histogram"

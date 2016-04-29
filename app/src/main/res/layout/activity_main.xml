@@ -7,10 +7,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.example.android.histogram.Main"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        tools:context="com.example.android.histogram.Main">
 
 
 
@@ -40,9 +37,7 @@
             android:theme="@style/Font_App_Button_Styles"
             android:onClick="onClickHistogram"
             android:layout_above="@+id/button_about_program"
-            android:layout_marginBottom="@dimen/between_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_marginBottom="@dimen/between_button" />
 
         <Button
             android:layout_width="match_parent"
@@ -53,9 +48,7 @@
             android:theme="@style/Font_App_Button_Styles"
             android:layout_marginBottom="@dimen/between_button"
             android:onClick="onClickAboutProgram"
-            android:layout_above="@+id/owner_name"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_above="@+id/owner_name" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,8 +59,7 @@
         android:textSize="@dimen/all_little_strings"
         android:id="@+id/owner_name"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentRight="true" />
     </RelativeLayout>
 
 

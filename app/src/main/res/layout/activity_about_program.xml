@@ -29,9 +29,7 @@
         android:id="@+id/how_to_read_histogram"
         android:scaleType="fitXY"
         android:src="@drawable/histogram_read"
-        android:layout_below="@+id/welcome_user_2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/welcome_user_2" />
 
     <!-- <Button
           android:layout_width="match_parent"

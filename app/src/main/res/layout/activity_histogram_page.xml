@@ -20,7 +20,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:theme="@style/Font_App_Styles"
         android:id="@+id/welcome_user_1"
-        android:layout_marginBottom="@dimen/content_horizontal_margin"
+        android:layout_marginBottom="@dimen/hisogram_activity_horizontal_margin"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"/>
 
@@ -124,7 +124,7 @@
         android:id="@+id/button_build_histogram"
         android:background="@drawable/button_states"
         android:theme="@style/Font_App_Button_Styles"
-        android:textSize="30dp"
+        android:textSize="35dp"
         android:onClick="BuilingHisogram"
         android:layout_weight="1"
         android:layout_alignBottom="@+id/scrollView_histogram_paint"

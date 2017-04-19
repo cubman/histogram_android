@@ -8,7 +8,7 @@
     <string name="back_to_menu">Back</string>
     <string name="gallery">Gallery</string>
     <string name="histogram_activation">Colors reverse</string>
-    <string name="build_histogram">Build</string>
+    <string name="build_histogram">+</string>
     <string name="About_program">About</string>
     <string name="About_program_enter">Welcome, %1$s!\n\n
                                       An image histogram is a type of histogram that acts as a graphical representation of the tonal
@@ -28,4 +28,9 @@
     <string name="histogram_downloading_problem">Some problem with histogram</string>
     <string name="image_was_not_downloaded">Image wasn\'t downloaded</string>
     <string name="gallery_problem">There\'s a problem in gallery</string>
+    <string name="camera">Camera</string>
+    <string name="save">Save</string>
+    <string name="savedPhoto">Photo was saved</string>
+    <string name="loadFrom">Load from ...</string>
+    <string name="randomPhoto">Random photo</string>
 </resources>

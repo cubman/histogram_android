@@ -8,7 +8,6 @@
     <string name="back_to_menu">Назад</string>
     <string name="gallery">Галерея</string>
     <string name="histogram_activation">Инверсия цвета</string>
-    <string name="build_histogram">Построить</string>
     <string name="About_program">О программе</string>
     <string name="About_program_enter">Добро пожаловать, %1$s!\n\n
     Гистограмма (в фотографии) — это график статистического распределения элементов цифрового изображения с различной яркостью,
@@ -28,4 +27,9 @@
     <string name="histogram_downloading_problem">Ошибка при постороении гистограммы</string>
     <string name="image_was_not_downloaded">Изображение не было загружено</string>
     <string name="gallery_problem">Обнаружена проблема в галерее</string>
+    <string name="camera">Камера</string>
+    <string name="save">Сохранить</string>
+    <string name="savedPhoto">Фотография была сохранена</string>
+    <string name="loadFrom">Загрузить из ...</string>randomPhoto
+    <string name="randomPhoto">Случайная фотография</string>
 </resources>

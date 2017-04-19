@@ -12,8 +12,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.graphics.*;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -38,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.TimeZone;
+import java.io.*;
 
 public class HistogramPage extends AppCompatActivity {
 
@@ -53,8 +56,10 @@ public class HistogramPage extends AppCompatActivity {
     private List<Map.Entry<String, String>> Colors = new LinkedList<>();
     private String UserName;
 
-    Switch ListToggle;
+    private boolean hist_reverse;
+
     ImageView Image1, Image2;
+    Button btmActivate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -71,6 +76,7 @@ public class HistogramPage extends AppCompatActivity {
 
             Image1 = (ImageView) findViewById(R.id.image_view_main);
             Image2 = (ImageView) findViewById(R.id.image_view_histogram);
+            btmActivate = (Button) findViewById(R.id.button_build_histogram);
 
             if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
                 Image2.getLayoutParams().height = (int)getResources().getDimension(R.dimen.image_height);
@@ -86,46 +92,35 @@ public class HistogramPage extends AppCompatActivity {
                     BmHistogram = savedInstanceState.getParcelable("selectedImage2");
                     OriginalImage = savedInstanceState.getParcelable("selectedImage_original");
                     NegativeImage = savedInstanceState.getParcelable("selectedImage_negative");
+                    btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
                 }
                 Image1.setImageBitmap(BmMain);
                 Image2.setImageBitmap(BmHistogram);
             }
             else {
-                BmMain = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
-                Image1.setImageBitmap(BmMain);
-                Image2.setImageDrawable(null);
+                setRandomImage();
             }
             UserName = getIntent().getStringExtra("user_name");
 
             TextView tw = (TextView) findViewById(R.id.welcome_user_1);
             tw.setText(getString(R.string.user_name, UserName));
 
-            ListToggle = (Switch) findViewById(R.id.switch1);
+            hist_reverse = false;
 
-            ListToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (BmHistogram != null) {
-                        BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
-                        Im = new ImageWork(BmMain, R.color.background_main);
-                        if (isChecked)
-                            // image2.setVisibility(View.INVISIBLE);
-                            BmHistogram = NegativeImage;
-                        else
-                            // image2.setVisibility(View.VISIBLE);
-                            BmHistogram = OriginalImage;
-                        Image2.setImageBitmap(BmHistogram);
 
-                    }
 
-                }
-            });
         }
         catch (Exception e) {
             Toast.makeText(this, R.string.data_downloading_problem, Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void setRandomImage() {
+        BmMain = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
+        Image1.setImageBitmap(BmMain);
+        Image2.setImageBitmap(BmHistogram = null);
+
+    }
     // возвращает произвольную фоторафию из списка содержимого
     private int GetRamdomImage() {
         int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
@@ -142,6 +137,7 @@ public class HistogramPage extends AppCompatActivity {
         savedInstanceState.putParcelable("selectedImage2", BmHistogram);
         savedInstanceState.putParcelable("selectedImage_original", OriginalImage);
         savedInstanceState.putParcelable("selectedImage_negative", NegativeImage);
+        savedInstanceState.putInt("selectedActivate_buttom", btmActivate.getVisibility());
     }
 
     // рисует гистограмму
@@ -154,11 +150,13 @@ public class HistogramPage extends AppCompatActivity {
             OriginalImage = Im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, Colors.get(0).getKey(), Colors.get(0).getValue());
             NegativeImage = Im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, Colors.get(1).getKey(), Colors.get(1).getValue());
 
-            if (ListToggle.isChecked())
+            if (hist_reverse)
                 BmHistogram = NegativeImage;
             else BmHistogram = OriginalImage;
 
             Image2.setImageBitmap(BmHistogram);
+
+            btmActivate.setVisibility(View.INVISIBLE);
         }
         catch (Exception e) {
             Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
@@ -171,6 +169,92 @@ public class HistogramPage extends AppCompatActivity {
         super.onBackPressed();
     }*/
 
+
+    public void saveContent(View v)
+    {
+        saveImage(BmHistogram);
+    }
+
+
+    private void saveImage(Bitmap finalBitmap) {
+        try
+        {
+            File saveDir = new File("/sdcard/CameraExample/");
+
+            if (!saveDir.exists())
+            {
+                saveDir.mkdirs();
+            }
+
+            FileOutputStream os = new FileOutputStream(String.format("/sdcard/CameraExample/%d.jpg", System.currentTimeMillis()));
+            os.write(finalBitmap.getNinePatchChunk());
+            os.close();
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        menu.add(0, 0, 0, R.string.save);
+        menu.add(0, 1, 0, R.string.histogram_activation);
+       // menu.getItem(1)
+        SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
+        sMenu.add(0, 3, 0, R.string.gallery);
+        sMenu.add(0, 4, 0, R.string.camera);
+        sMenu.add(0, 5, 0, R.string.randomPhoto);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.println(1, "sad", String.valueOf(item.getItemId()));
+        switch (item.getItemId()) {
+            case 0:
+                saveImage(BmMain);
+                return true;
+            case 1:
+                hist_reverse = !hist_reverse;
+                if (BmHistogram != null) {
+                    BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
+                    Im = new ImageWork(BmMain, R.color.background_main);
+                    if (hist_reverse)
+                        // image2.setVisibility(View.INVISIBLE);
+                        BmHistogram = NegativeImage;
+                    else
+                        // image2.setVisibility(View.VISIBLE);
+                        BmHistogram = OriginalImage;
+                    Image2.setImageBitmap(BmHistogram);
+                }
+
+                return true;
+            case 3:
+                // Загрузка изображения из галереи
+                Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                return true;
+            case 4:
+                // Загрузка изображения из камеры
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
+                return true;
+            case 5:
+                setRandomImage();
+                btmActivate.setVisibility(View.VISIBLE);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
     // Загрузка изображения из галереи
     public void LoadPictureFromGallery(View v) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -182,30 +266,43 @@ public class HistogramPage extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        try {
             if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
-                Uri uri = data.getData();
-                BitmapFactory.Options options = new BitmapFactory.Options();
+                try {
+                    Uri uri = data.getData();
+                    BitmapFactory.Options options = new BitmapFactory.Options();
 
-                BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                    BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
 
 
-              if (BmMain.getHeight() > MAIN_IMAGE_HEIGHT || BmMain.getWidth() > MAIN_IMAGE_WIDTH) {
-                    options.inSampleSize = getResources().getInteger(R.integer.image_scale);
-                  BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+                    if (BmMain.getHeight() > MAIN_IMAGE_HEIGHT || BmMain.getWidth() > MAIN_IMAGE_WIDTH) {
+                        options.inSampleSize = getResources().getInteger(R.integer.image_scale);
+                        BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+                    }
+
+                    if (BmMain == null)
+                        Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
+
+                    Image1.setImageBitmap(BmMain);
+                    Image2.setImageBitmap(BmHistogram = null);
+
+                    btmActivate.setVisibility(View.VISIBLE);
+
+                } catch (Exception e) {
+                    Toast.makeText(this, R.string.gallery_problem, Toast.LENGTH_SHORT).show();
+
                 }
+            } else  {
+                try {
+                    BmMain = (Bitmap) data.getExtras().get("data");
+                    Image1.setImageBitmap(BmMain);
 
-                if (BmMain == null)
-                    Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
+                    Image2.setImageBitmap(BmHistogram = null);
+                    btmActivate.setVisibility( View.VISIBLE);
 
-                Image1.setImageBitmap(BmMain);
-                Image2.setImageBitmap(BmHistogram = null);
-            }
+            } catch (Exception e) {
+            Toast.makeText(this, R.string.gallery_problem, Toast.LENGTH_SHORT).show();
+
         }
-        catch(Exception e){
-                Toast.makeText(this, R.string.gallery_problem, Toast.LENGTH_SHORT).show();
-
-            }
+        }
         }
 }

@@ -8,7 +8,7 @@
 
     <dimen name="content_horisontal_Histogram">35dp</dimen>
 
-    <dimen name="between_button">25dp</dimen>
+    <dimen name="between_button">10dp</dimen>
 
     <dimen name="text_height">17sp</dimen>
     <dimen name="button_text_height">19sp</dimen>
@@ -19,5 +19,6 @@
 
     <dimen name="all_little_strings">15sp</dimen>
 
-    <dimen name="image_height">230dp</dimen>
+    <dimen name="image_height">290dp</dimen>
+    <dimen name="between_images">30dp</dimen>
 </resources>

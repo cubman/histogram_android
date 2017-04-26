@@ -28,9 +28,13 @@
     <string name="histogram_downloading_problem">Some problem with histogram</string>
     <string name="image_was_not_downloaded">Image wasn\'t downloaded</string>
     <string name="gallery_problem">There\'s a problem in gallery</string>
+    <string name="camera_problem">There\'s a problem with camaera</string>
     <string name="camera">Camera</string>
     <string name="save">Save</string>
     <string name="savedPhoto">Photo was saved</string>
     <string name="loadFrom">Load from ...</string>
     <string name="randomPhoto">Random photo</string>
+    <string name="imageWasSavedSuccesfully">Photo was saved</string>
+    <string name="imageWasSavedUnsuccesfully">Photo wasn\' t saved</string>
+    <string name="imageToSaveWasNotFound">Photo wasn\' t found</string>
 </resources>

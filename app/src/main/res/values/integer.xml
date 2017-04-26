@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="main_inmage_max_height">1000</integer>
-    <integer name="main_inmage_max_widtht">1000</integer>
+    <integer name="main_inmage_max_height">2000</integer>
+    <integer name="main_inmage_max_widtht">2000</integer>
 
     <integer name="histogram_width">512</integer>
     <integer name="image_scale">4</integer>
 
     <integer name="text_view_max_length">16</integer>
+
+    <integer name="max_GraphView_heigh">512</integer>
 </resources>

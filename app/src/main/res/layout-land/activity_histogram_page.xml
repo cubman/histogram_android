@@ -59,16 +59,17 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/image_height"
             android:scaleType="fitXY"
             android:id="@+id/image_view_histogram"
             />
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="@integer/max_GraphView_heigh"
+            android:layout_height="@dimen/image_height"
             android:id="@+id/graph"
-            android:visibility="visible" />
+            android:visibility="visible"
+            />
     </LinearLayout>
 </ScrollView>
 

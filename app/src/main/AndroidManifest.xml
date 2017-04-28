@@ -4,10 +4,11 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature
+  <!--  <uses-feature
         android:name="android.hardware.camera"
-        android:required="true" />
+        android:required="true" />-->
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustResize">
+
         <activity
             android:name=".splashScreenActivity"
             android:screenOrientation="portrait"

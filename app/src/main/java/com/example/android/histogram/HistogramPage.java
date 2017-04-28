@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.MediaScannerConnection;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.graphics.*;
 import android.os.Environment;
@@ -23,6 +25,7 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.RequiresPermission;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +41,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -67,7 +71,9 @@ public class HistogramPage extends AppCompatActivity {
     private  int MAIN_IMAGE_WIDTH;
 
     private  GraphView gv;
-    private ImageWork Im;                        // класс для работы с изображениями
+    private ImageWork Im; // класс для работы с изображениями
+    private Uri file;
+    private String camPath;
     Bitmap BmMain, BmHistogram, OriginalImage, NegativeImage;
 
     private List<Map.Entry<String, String>> Colors = new LinkedList<>();
@@ -97,8 +103,8 @@ public class HistogramPage extends AppCompatActivity {
             gv.removeAllSeries();
             btmActivate = (Button) findViewById(R.id.button_build_histogram);
 
-            Colors.add(new AbstractMap.SimpleEntry<String, String>("#F5F5F5","#000000"));
-            Colors.add(new AbstractMap.SimpleEntry<String, String>("#000000","#F5F5F5"));
+            Colors.add(new AbstractMap.SimpleEntry<>("#F5F5F5","#000000"));
+            Colors.add(new AbstractMap.SimpleEntry<>("#000000","#F5F5F5"));
 
             if (savedInstanceState != null) {
                 {
@@ -107,7 +113,7 @@ public class HistogramPage extends AppCompatActivity {
                     OriginalImage = savedInstanceState.getParcelable("selectedImage_original");
                     NegativeImage = savedInstanceState.getParcelable("selectedImage_negative");
                     btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
-                    Im = (ImageWork) savedInstanceState.getParcelable("selectImageWork");
+                    Im = savedInstanceState.getParcelable("selectImageWork");
                     if (Im != null) {
                         Im.insertGgraph(gv);
 
@@ -116,6 +122,8 @@ public class HistogramPage extends AppCompatActivity {
                         gv.setVisibility(View.GONE);
                         Image2.setVisibility(View.GONE);
                     }
+
+                    camPath = savedInstanceState.getString("imagePathCamera");
                 }
                 Image1.setImageBitmap(BmMain);
                 Image2.setImageBitmap(BmHistogram);
@@ -142,17 +150,22 @@ public class HistogramPage extends AppCompatActivity {
     }
 
 
+    private boolean checkCameraHardware(Context context) {
+        return  context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // show menu when menu button is pressed
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_histogram, menu);
+        //MenuInflater inflater = getMenuInflater();
+        getMenuInflater().inflate(R.menu.menu_histogram, menu);
         menu.add(0, 0, 0, R.string.save);
         menu.add(0, 1, 0, R.string.histogram_activation).setCheckable(true);
 
         SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
             sMenu.add(0, 3, 0, R.string.gallery);
-            sMenu.add(0, 4, 0, R.string.camera);
+            if (checkCameraHardware(this))
+                 sMenu.add(0, 4, 0, R.string.camera);
             sMenu.add(0, 5, 0, R.string.randomPhoto);
 
 
@@ -184,6 +197,7 @@ public class HistogramPage extends AppCompatActivity {
         savedInstanceState.putParcelable("selectedImage_negative", NegativeImage);
         savedInstanceState.putInt("selectedActivate_buttom", btmActivate.getVisibility());
         savedInstanceState.putParcelable("selectImageWork", Im);
+        savedInstanceState.putString("imagePathCamera", camPath);
     }
 
 
@@ -223,7 +237,7 @@ public class HistogramPage extends AppCompatActivity {
     {
         //this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
         MediaScannerConnection.scanFile(this,
-                new String[] { file.getAbsolutePath() }, null,
+                new String[]{file.getAbsolutePath()}, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
                     public void onScanCompleted(String path, Uri uri) {
                         //now visible in gallery
@@ -236,7 +250,7 @@ public class HistogramPage extends AppCompatActivity {
     private void SavePhoto(Bitmap bitmap) {
 
         Boolean b = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-        String file_path = null;
+        String file_path;
             if(b)
             {
                 // yes SD-card is present
@@ -297,6 +311,7 @@ public class HistogramPage extends AppCompatActivity {
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -320,9 +335,41 @@ public class HistogramPage extends AppCompatActivity {
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
                 return true;
             case 4:
+
                 // Загрузка изображения из камеры
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, CAMERA_REQUEST);
+                Intent cameraPickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //getting uri of the file
+                /*file = Uri.fromFile(CameraWork.getFile());
+
+                //Setting the file Uri to my photo
+                    cameraPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+                Log.d("12345", "++++" + file.getPath());
+
+                startActivityForResult(cameraPickerIntent, CAMERA_REQUEST);*/
+
+                if (cameraPickerIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+
+                    try {
+                        photoFile = getFile();
+                    } catch (Exception e) {
+                        Log.d("12345", "++++" + "000000");
+                    }
+                    Log.d("12345", "++++" + "1");
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+
+                        file = Uri.fromFile(photoFile);
+                        camPath = file.toString();
+                        Log.d("12345", "++++" + "2" + file.getPath() + " " + camPath);
+                        cameraPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+
+                        Log.d("12345", "++++" + "3");
+
+                        startActivityForResult(cameraPickerIntent, CAMERA_REQUEST);
+                    }
+                }
                 return true;
             case 5:
                 // Загрузка изображения из имеющихся
@@ -335,44 +382,57 @@ public class HistogramPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private File getFile() throws IOException {
+        String imageFileName = "JPEG_" + getCurTime() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        camPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void getAndScalePhoto(Uri data) throws FileNotFoundException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(data));
+
+
+        if (BmMain.getHeight() > MAIN_IMAGE_HEIGHT || BmMain.getWidth() > MAIN_IMAGE_WIDTH) {
+            options.inSampleSize = getResources().getInteger(R.integer.image_scale);
+            BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(data), null, options);
+        }
+
+        if (BmMain == null)
+            Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
+
+        Image1.setImageBitmap(BmMain);
+        Image2.setImageBitmap(BmHistogram = null);
+
+        btmActivate.setVisibility(View.VISIBLE);
+        Image2.setVisibility(View.GONE);
+        gv.setVisibility(View.GONE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
                 try {
-                    Uri uri = data.getData();
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-
-                    BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                   getAndScalePhoto(data.getData());
 
 
-                    if (BmMain.getHeight() > MAIN_IMAGE_HEIGHT || BmMain.getWidth() > MAIN_IMAGE_WIDTH) {
-                        options.inSampleSize = getResources().getInteger(R.integer.image_scale);
-                        BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
-                    }
-
-                    if (BmMain == null)
-                        Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
-
-                    Image1.setImageBitmap(BmMain);
-                    Image2.setImageBitmap(BmHistogram = null);
-
-                    btmActivate.setVisibility(View.VISIBLE);
-                    Image2.setVisibility(View.GONE);
-                    gv.setVisibility(View.GONE);
                 } catch (Exception e) {
                     Toast.makeText(this, R.string.gallery_problem, Toast.LENGTH_SHORT).show();
-
                 }
-            } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
+            } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
                 try {
-                    BmMain = (Bitmap) data.getExtras().get("data");
-                    Image1.setImageBitmap(BmMain);
+                    Log.d("12345", "++++" + "2" +camPath);
 
-                    Image2.setImageBitmap(BmHistogram = null);
-                    btmActivate.setVisibility(View.VISIBLE);
-                    Image2.setVisibility(View.GONE);
-                    gv.setVisibility(View.GONE);
+                    getAndScalePhoto(Uri.parse(camPath));
+
             } catch (Exception e) {
             Toast.makeText(this, R.string.camera_problem, Toast.LENGTH_SHORT).show();
 

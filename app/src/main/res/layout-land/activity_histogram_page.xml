@@ -57,19 +57,27 @@
             android:layout_marginBottom="@dimen/between_images"
             />
 
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_height"
+            android:id="@+id/graph_main"
+            android:visibility="visible"
+            />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height"
-            android:scaleType="fitXY"
-            android:id="@+id/image_view_histogram"
+            android:scaleType="fitCenter"
+            android:id="@+id/image_view_histogram_equalised"
             />
 
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height"
-            android:id="@+id/graph"
+            android:id="@+id/graph_hist_equalised"
             android:visibility="visible"
             />
+
     </LinearLayout>
 </ScrollView>
 

@@ -1,59 +1,50 @@
-package com.example.android.histogram;
+package com.example.android.histogram.ImageManipulation;
 
 import android.graphics.*;
-import android.graphics.drawable.RotateDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.animation.Animation;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
-import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-
 /**
  * Created by Анатолий on 17.04.2016.
  */
-public class ImageWork implements Parcelable  {
-    private final int ColorsCount = 256;
+public abstract class ImageWork implements Parcelable {
+    protected final int ColorsCount = 256;
 
-    private Bitmap Bm;
-    private int color;
-    private int[] MainRgb = new int[ColorsCount];
-    private double [] Normalised;
+    protected Bitmap Bm;
+    protected int[] MainRgb = new int[ColorsCount];
+    protected double [] Normalised;
 
-    protected ImageWork() {
-        Bm = Bitmap.createBitmap(0,0, Bitmap.Config.ARGB_8888);
-    }
-
-    public  ImageWork(Bitmap Bm, int c) {
+    protected ImageWork(Bitmap Bm) {
         this.Bm = Bm;
-        this.color = c;
         CountHistogram();
         Normalised = normalise();
     }
 
-    // подсчитывает статистические данные по изображению
-    private void CountHistogram() {
-        for (int i = 0; i < Bm.getHeight(); ++i)
-            for (int j = 0;j <Bm.getWidth();++j) {
-                int pic = Bm.getPixel(j, i);
-                ++MainRgb[(int) (0.3 * Color.red(pic) + 0.59 * Color.green(pic) + 0.11 * Color.blue(pic))];
-            }
+    public void setBitmap(Bitmap newBm) {
+        this.Bm = newBm;
+    }
+    // нормализует гистограмму
+    protected double[] normalise() {
+        double [] res = new double[MainRgb.length];
+
+        double max = FindMaxHeight();
+        for (int i = 0; i < ColorsCount; ++i)
+            res[i] = MainRgb[i] / max;
+
+        return  res;
     }
 
-    // получаем гистограмму с заданной высотой и ширино  и цветовой гаммой
-    public Bitmap get_gitogram(int heigh, int width, String Back_color, String Histogram_color) {
-        Bitmap bm_return = Bitmap.createBitmap(heigh, width, Bitmap.Config.ARGB_8888);
 
-        return  BuildHistogram(bm_return, Back_color, Histogram_color);
+    // получаем гистограмму с заданной высотой и ширино  и цветовой гаммой
+    public Bitmap get_gitogram(int height, int width, String Back_color, String Histogram_color) {
+
+        return  BuildHistogram(height, width, Back_color, Histogram_color);
     }
 
     // найти самый высокий пик
@@ -95,19 +86,10 @@ public class ImageWork implements Parcelable  {
         series.setSpacing(0);
 
     }
-    // нормаль=изует гистограмму
-    private double[] normalise() {
-        double [] res = new double[MainRgb.length];
-        int max = FindMaxHeight();
-        for (int i = 0; i < ColorsCount; ++i)
-            res[i] = MainRgb[i] / Double.valueOf(max);
 
-        return  res;
-    }
 // строит изобраение, которое будет подходящим для image view
-    private Bitmap BuildHistogram(Bitmap bm_return, String Back_color, String Histogram_color) {
-        int height = bm_return.getHeight();
-        int width = bm_return.getWidth();
+    private Bitmap BuildHistogram(int height, int width, String Back_color, String Histogram_color) {
+        Bitmap bm_return = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         int step = width / ColorsCount;
         bm_return.eraseColor(Color.parseColor(Back_color));
@@ -122,22 +104,26 @@ public class ImageWork implements Parcelable  {
             c.drawRect(i * step, 0, (1 + i) * step, (int) (height  * Normalised[i]), p);
 
         matrix.preScale(-1, 1);
-        matrix.postRotate(180, width/2, height/2);
-        bm_return = Bitmap.createBitmap(bm_return, 0,0,width, height, matrix, false);
-        bm_return.setDensity(DisplayMetrics.DENSITY_DEFAULT);
-        return bm_return;
+        matrix.postRotate(180, width / 2, height / 2);
+        Bitmap bm = Bitmap.createBitmap(bm_return, 0, 0, width, height, matrix, false);
+        bm.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+        return bm;
     }
 
-    public static final Parcelable.Creator<ImageWork> CREATOR
-            = new Parcelable.Creator<ImageWork>() {
-        public ImageWork createFromParcel(Parcel in) {
-            return new ImageWork(in);
-        }
+    public static Bitmap convertToGray(Bitmap Bm) {
+        Bitmap b = Bitmap.createBitmap(Bm.getWidth(), Bm.getHeight(), Bitmap.Config.ARGB_8888);
+        for (int i = 0; i < b.getWidth(); ++i)
+            for (int j = 0; j < b.getHeight(); ++j) {
+                int pixel = Bm.getPixel(i, j);
+                int clr = (int) (0.3 * Color.red(pixel) + 0.59 * Color.green(pixel) + 0.11 * Color.blue(pixel));
+                b.setPixel(i, j, Color.argb(255, clr, clr, clr));//();
+            }
+        return b;
+    }
 
-        public ImageWork[] newArray(int size) {
-            return new ImageWork[size];
-        }
-    };
+    abstract public Bitmap equalisedImage();
+
+    abstract protected void CountHistogram();
 
     @Override
     public int describeContents() {
@@ -150,7 +136,7 @@ public class ImageWork implements Parcelable  {
         dest.writeDoubleArray(Normalised);
     }
 
-    private ImageWork(Parcel in) {
+    protected ImageWork(Parcel in) {
         in.readIntArray(MainRgb);
         in.readDoubleArray(Normalised);
     }

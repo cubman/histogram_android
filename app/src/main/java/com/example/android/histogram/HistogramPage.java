@@ -1,64 +1,37 @@
 package com.example.android.histogram;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.ClipData;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.media.MediaScannerConnection;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.graphics.*;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.RequiresPermission;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.*;
 import android.widget.*;
 
+import com.example.android.histogram.ImageManipulation.ColorImage;
+import com.example.android.histogram.ImageManipulation.GrayImage;
+import com.example.android.histogram.ImageManipulation.ImageWork;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
-import java.util.TimeZone;
 import java.io.*;
 
 import static android.app.PendingIntent.getActivity;
-import static android.content.Context.*;
-import static com.example.android.histogram.R.string.app_name;
 
 public class HistogramPage extends AppCompatActivity {
 
@@ -70,19 +43,19 @@ public class HistogramPage extends AppCompatActivity {
     private  int MAIN_IMAGE_HEIGHT;
     private  int MAIN_IMAGE_WIDTH;
 
-    private  GraphView gv;
-    private ImageWork Im; // класс для работы с изображениями
+    private  GraphView gv_main, gv_hist_equal;
+    private ImageWork Im_main, Im_hist_equal; // класс для работы с изображениями
     private Uri file;
     private String camPath;
-    Bitmap BmMain, BmHistogram, OriginalImage, NegativeImage;
+    Bitmap BmMain, BmHistogramEqaulised;//, OriginalImage, NegativeImage;
 
-    private List<Map.Entry<String, String>> Colors = new LinkedList<>();
+   // private List<Map.Entry<String, String>> Colors = new LinkedList<>();
     private String UserName;
-
-    private boolean hist_reverse;
 
     ImageView Image1, Image2;
     Button btmActivate;
+    private int imageType = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -98,48 +71,48 @@ public class HistogramPage extends AppCompatActivity {
             MAIN_IMAGE_WIDTH = getResources().getInteger(R.integer.main_inmage_max_widtht);
 
             Image1 = (ImageView) findViewById(R.id.image_view_main);
-            Image2 = (ImageView) findViewById(R.id.image_view_histogram);
-            gv     = (GraphView) findViewById(R.id.graph);
-            gv.removeAllSeries();
+            Image2 = (ImageView) findViewById(R.id.image_view_histogram_equalised);
+            gv_main     = (GraphView) findViewById(R.id.graph_main);
+            gv_hist_equal     = (GraphView) findViewById(R.id.graph_hist_equalised);
+
             btmActivate = (Button) findViewById(R.id.button_build_histogram);
 
-            Colors.add(new AbstractMap.SimpleEntry<>("#F5F5F5","#000000"));
-            Colors.add(new AbstractMap.SimpleEntry<>("#000000","#F5F5F5"));
+           // Colors.add(new AbstractMap.SimpleEntry<>("#F5F5F5","#000000"));
+           // Colors.add(new AbstractMap.SimpleEntry<>("#000000","#F5F5F5"));
 
             if (savedInstanceState != null) {
-                {
-                    BmMain = savedInstanceState.getParcelable("selectedImage1");
-                    BmHistogram = savedInstanceState.getParcelable("selectedImage2");
-                    OriginalImage = savedInstanceState.getParcelable("selectedImage_original");
-                    NegativeImage = savedInstanceState.getParcelable("selectedImage_negative");
-                    btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
-                    Im = savedInstanceState.getParcelable("selectImageWork");
-                    if (Im != null) {
-                        Im.insertGgraph(gv);
 
-                        gv.setVisibility(View.VISIBLE);
-                    } else {
-                        gv.setVisibility(View.GONE);
-                        Image2.setVisibility(View.GONE);
-                    }
+                BmMain = savedInstanceState.getParcelable("selectedImage1");
+                BmHistogramEqaulised = savedInstanceState.getParcelable("selectedImage2");
+                //OriginalImage = savedInstanceState.getParcelable("selectedImage_original");
+               // NegativeImage = savedInstanceState.getParcelable("selectedImage_negative");
+                btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
+                Im_main = savedInstanceState.getParcelable("selectImageWorkMain");
+                Im_hist_equal = savedInstanceState.getParcelable("selectImageWorkHistEqualise");
 
-                    camPath = savedInstanceState.getString("imagePathCamera");
-                }
-                Image1.setImageBitmap(BmMain);
-                Image2.setImageBitmap(BmHistogram);
+                //Im_main.insertGgraph(gv_main);
+
+                  /*  gv.setVisibility(View.VISIBLE);
+                } else {
+                    gv.setVisibility(View.GONE);
+                    Image2.setVisibility(View.GONE);
+                }*/
+
+                camPath = savedInstanceState.getString("imagePathCamera");
+
+                initImageWork(0);
+                if (Im_hist_equal != null)
+                    initImageWork(1);
             }
             else {
                 setRandomImage();
-                gv.setVisibility(View.GONE);
-                Image2.setVisibility(View.GONE);
+
             }
 
             UserName = getIntent().getStringExtra("user_name");
 
             TextView tw = (TextView) findViewById(R.id.welcome_user_1);
             tw.setText(getString(R.string.user_name, UserName));
-
-            hist_reverse = false;
 
 
 
@@ -149,6 +122,9 @@ public class HistogramPage extends AppCompatActivity {
         }
     }
 
+    private  void setEqualisedData() {
+
+    }
 
     private boolean checkCameraHardware(Context context) {
         return  context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
@@ -160,7 +136,7 @@ public class HistogramPage extends AppCompatActivity {
         //MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu_histogram, menu);
         menu.add(0, 0, 0, R.string.save);
-        menu.add(0, 1, 0, R.string.histogram_activation).setCheckable(true);
+       // menu.add(0, 1, 0, R.string.histogram_activation).setCheckable(true);
 
         SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
             sMenu.add(0, 3, 0, R.string.gallery);
@@ -173,11 +149,52 @@ public class HistogramPage extends AppCompatActivity {
     }
 
 
+    private void initImageWork(int blockInit) {
+        switch (blockInit) {
+            case 0 :
+                if (imageType == 0) {
+                    BmMain = ImageWork.convertToGray(BmMain);
+
+                    Im_main = new GrayImage(BmMain);
+                }
+                else
+                    Im_main = new ColorImage(BmMain);
+
+                Image1.setImageBitmap(BmMain);
+                gv_main.removeAllSeries();
+                Im_main.insertGgraph(gv_main);
+
+
+
+
+                Image2.setImageBitmap(BmHistogramEqaulised = null);
+                gv_hist_equal.setVisibility(View.GONE);
+                Image2.setVisibility(View.GONE);
+                btmActivate.setVisibility(View.VISIBLE);
+                break;
+            case 1 :
+                BmHistogramEqaulised = Im_main.equalisedImage();
+                if (imageType == 0)
+                    Im_hist_equal = new GrayImage(BmHistogramEqaulised);
+                else
+                    Im_hist_equal = new ColorImage(BmHistogramEqaulised);
+
+                Image2.setImageBitmap(BmHistogramEqaulised);
+                gv_hist_equal.removeAllSeries();
+                Im_hist_equal.insertGgraph(gv_hist_equal);
+
+
+                gv_hist_equal.setVisibility(View.VISIBLE);
+                Image2.setVisibility(View.VISIBLE);
+                btmActivate.setVisibility(View.INVISIBLE);
+                break;
+        }
+
+    }
+
     private void setRandomImage() {
         BmMain = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
-        Image1.setImageBitmap(BmMain);
-        Image2.setImageBitmap(BmHistogram = null);
-
+        initImageWork(0);
     }
     // возвращает произвольную фоторафию из списка содержимого
     private int GetRamdomImage() {
@@ -192,26 +209,28 @@ public class HistogramPage extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putParcelable("selectedImage1", BmMain);
-        savedInstanceState.putParcelable("selectedImage2", BmHistogram);
-        savedInstanceState.putParcelable("selectedImage_original", OriginalImage);
-        savedInstanceState.putParcelable("selectedImage_negative", NegativeImage);
+        savedInstanceState.putParcelable("selectedImage2", BmHistogramEqaulised);
+       /* savedInstanceState.putParcelable("selectedImage_original", OriginalImage);
+        savedInstanceState.putParcelable("selectedImage_negative", NegativeImage);*/
         savedInstanceState.putInt("selectedActivate_buttom", btmActivate.getVisibility());
-        savedInstanceState.putParcelable("selectImageWork", Im);
+        savedInstanceState.putParcelable("selectImageWorkMain", Im_main);
+        savedInstanceState.putParcelable("selectImageWorkHistEqualise", Im_hist_equal);
         savedInstanceState.putString("imagePathCamera", camPath);
     }
 
 
-    // рисует гистограмму
+   /* // рисует гистограмму
     public void BuilingHisogram(View v) {
         if (BmHistogram == null)
         try {
-            BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
-            Im = new ImageWork(BmMain, R.color.background_main);
+            //BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
+          //  if (Im == null)
+          //      Im = new ImageWork(BmMain, R.color.background_main);
             gv.removeAllSeries();
             Im.insertGgraph(gv);
 
-            OriginalImage = Im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, Colors.get(0).getKey(), Colors.get(0).getValue());
-            NegativeImage = Im.get_gitogram(IMAGE_SIZE_WIDTH, IMAGE_SIZE_HEIGHT, Colors.get(1).getKey(), Colors.get(1).getValue());
+            OriginalImage = Im.get_gitogram(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH, Colors.get(0).getKey(), Colors.get(0).getValue());
+            NegativeImage = Im.get_gitogram(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH, Colors.get(1).getKey(), Colors.get(1).getValue());
 
             if (hist_reverse)
                 BmHistogram = NegativeImage;
@@ -226,6 +245,19 @@ public class HistogramPage extends AppCompatActivity {
         catch (Exception e) {
             Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
         }
+    }*/
+
+    public void BuilingHisogram(View v) {
+
+        if (BmHistogramEqaulised == null)
+            try {
+
+                initImageWork(1);
+                btmActivate.setVisibility(View.INVISIBLE);
+            }
+            catch (Exception e) {
+                Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
+            }
     }
 
     private String fromInt(int val)
@@ -295,12 +327,13 @@ public class HistogramPage extends AppCompatActivity {
         return formDate;
     }
 
-    private void ReverseColors(MenuItem item) {
+   /* private void ReverseColors(MenuItem item) {
         hist_reverse = !hist_reverse;
         item.setChecked((hist_reverse));
         if (BmHistogram != null) {
             BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
             Im = new ImageWork(BmMain, R.color.background_main);
+
             if (hist_reverse)
                 // image2.setVisibility(View.INVISIBLE);
                 BmHistogram = NegativeImage;
@@ -311,21 +344,21 @@ public class HistogramPage extends AppCompatActivity {
         }
     }
 
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         Log.println(1, "sad", String.valueOf(item.getItemId()));
         switch (item.getItemId()) {
             case 0:
-                if (BmHistogram != null)
-                    SavePhoto(BmHistogram);
+                if (BmHistogramEqaulised != null)
+                    SavePhoto(BmHistogramEqaulised);
                 else
                     Toast.makeText(this, R.string.imageToSaveWasNotFound, Toast.LENGTH_LONG).show();
 
                 return true;
             case 1:
-                ReverseColors(item);
+               // ReverseColors(item);
 
                 return true;
             case 3:
@@ -374,9 +407,6 @@ public class HistogramPage extends AppCompatActivity {
             case 5:
                 // Загрузка изображения из имеющихся
                 setRandomImage();
-                btmActivate.setVisibility(View.VISIBLE);
-                Image2.setVisibility(View.GONE);
-                gv.setVisibility(View.GONE);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -408,13 +438,9 @@ public class HistogramPage extends AppCompatActivity {
         if (BmMain == null)
             Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
 
-        Image1.setImageBitmap(BmMain);
-        Image2.setImageBitmap(BmHistogram = null);
-
-        btmActivate.setVisibility(View.VISIBLE);
-        Image2.setVisibility(View.GONE);
-        gv.setVisibility(View.GONE);
+        initImageWork(0);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -251,7 +251,6 @@ public class HistogramPage extends AppCompatActivity {
 
         if (BmHistogramEqaulised == null)
             try {
-
                 initImageWork(1);
                 btmActivate.setVisibility(View.INVISIBLE);
             }

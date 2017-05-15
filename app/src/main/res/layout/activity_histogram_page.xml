@@ -52,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height"
             android:layout_centerInParent="true"
+            android:clickable="true"
             android:scaleType="fitCenter"
             android:id="@+id/image_view_main"
             android:layout_marginBottom="@dimen/between_images"
@@ -61,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="@integer/max_GraphView_heigh"
             android:id="@+id/graph_main"
-            android:visibility="visible" />
+            android:layout_marginLeft="@dimen/around_main_border"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -74,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="@integer/max_GraphView_heigh"
             android:id="@+id/graph_hist_equalised"
+            android:layout_marginLeft="@dimen/around_main_border"
             android:visibility="visible" />
     </LinearLayout>
 </ScrollView>

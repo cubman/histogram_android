@@ -36,4 +36,5 @@
     <string name="imageWasSavedSuccesfully">Фото было успешно сохранено</string>
     <string name="imageWasSavedUnsuccesfully">Фото не было сохранено</string>
     <string name="imageToSaveWasNotFound">Фото для сохранения не найдено</string>
+    <string name="changeName">изменить имя</string>
 </resources>

@@ -10,12 +10,22 @@
         tools:context="com.example.android.histogram.Main">
 
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/hisogram_activity_horizontal_margin"
+        android:paddingRight="@dimen/hisogram_activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:id="@+id/Linear_layout_main_input"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/ground_text_size"
-            android:layout_marginTop="@dimen/content_horizontal_margin"
             android:hint="@string/Name_label"
             android:singleLine="true"
             android:windowSoftInputMode="stateHidden"
@@ -23,10 +33,19 @@
             android:maxLength="@integer/text_view_max_length"
             android:id="@+id/edit_text_main"
             android:background="@color/text_edit_color"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/save_black"
+            android:id="@+id/button_save_name"
+            android:onClick="saveName"
+            android:layout_marginLeft="@dimen/between_button"
+            android:layout_weight="1"/>
 
 
+    </LinearLayout>
 
         <Button
             android:layout_width="match_parent"

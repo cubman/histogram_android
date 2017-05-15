@@ -1,20 +1,26 @@
 package com.example.android.histogram.ImageManipulation;
 
+import android.content.Context;
 import android.graphics.*;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
+import java.io.File;
+import java.io.FileWriter;
+
 /**
  * Created by Анатолий on 17.04.2016.
  */
 public abstract class ImageWork implements Parcelable {
-    protected final int ColorsCount = 256;
+    protected static final int ColorsCount = 256;
 
     protected Bitmap Bm;
     protected int[] MainRgb = new int[ColorsCount];
@@ -43,8 +49,31 @@ public abstract class ImageWork implements Parcelable {
 
     // получаем гистограмму с заданной высотой и ширино  и цветовой гаммой
     public Bitmap get_gitogram(int height, int width, String Back_color, String Histogram_color) {
-
         return  BuildHistogram(height, width, Back_color, Histogram_color);
+    }
+
+    private static void saveSt(Context context, ImageWork im, File fName) {
+        try {
+            FileWriter f = new FileWriter(fName);
+            for (int i = 0; i < ColorsCount; ++i)
+                f.write(String.format("%d;%d\n", i, im.MainRgb[i]));
+            f.flush();
+            f.close();
+            Log.d("333", "was written");
+        } catch (Exception e) {
+            Log.d("333", "was not written");
+            Toast.makeText(context, "was stat", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public static void saveStatistic(Context context, ImageWork original, ImageWork fuzzy, ImageWork full, File originalCSV, File fuzzyCSV, File fullCSV) {
+       /* original.CountHistogram();
+        fuzzy.CountHistogram();
+        full.CountHistogram();*/
+
+        saveSt(context, original, originalCSV);
+        saveSt(context, fuzzy, fuzzyCSV);
+        saveSt(context, full, fullCSV);
+        Log.d("PATHNAME", originalCSV.getAbsolutePath());
     }
 
     // найти самый высокий пик

@@ -17,6 +17,8 @@ import android.view.*;
 import android.widget.*;
 
 import com.example.android.histogram.ImageManipulation.ColorImage;
+import com.example.android.histogram.ImageManipulation.GrayFull;
+import com.example.android.histogram.ImageManipulation.GrayFuzzy;
 import com.example.android.histogram.ImageManipulation.GrayImage;
 import com.example.android.histogram.ImageManipulation.ImageWork;
 import com.jjoe64.graphview.GraphView;
@@ -77,26 +79,13 @@ public class HistogramPage extends AppCompatActivity {
 
             btmActivate = (Button) findViewById(R.id.button_build_histogram);
 
-           // Colors.add(new AbstractMap.SimpleEntry<>("#F5F5F5","#000000"));
-           // Colors.add(new AbstractMap.SimpleEntry<>("#000000","#F5F5F5"));
-
             if (savedInstanceState != null) {
 
                 BmMain = savedInstanceState.getParcelable("selectedImage1");
                 BmHistogramEqaulised = savedInstanceState.getParcelable("selectedImage2");
-                //OriginalImage = savedInstanceState.getParcelable("selectedImage_original");
-               // NegativeImage = savedInstanceState.getParcelable("selectedImage_negative");
                 btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
                 Im_main = savedInstanceState.getParcelable("selectImageWorkMain");
                 Im_hist_equal = savedInstanceState.getParcelable("selectImageWorkHistEqualise");
-
-                //Im_main.insertGgraph(gv_main);
-
-                  /*  gv.setVisibility(View.VISIBLE);
-                } else {
-                    gv.setVisibility(View.GONE);
-                    Image2.setVisibility(View.GONE);
-                }*/
 
                 camPath = savedInstanceState.getString("imagePathCamera");
 
@@ -136,7 +125,7 @@ public class HistogramPage extends AppCompatActivity {
         //MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu_histogram, menu);
         menu.add(0, 0, 0, R.string.save);
-       // menu.add(0, 1, 0, R.string.histogram_activation).setCheckable(true);
+        menu.add(0, 1, 0, "save Statistic");
 
         SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
             sMenu.add(0, 3, 0, R.string.gallery);
@@ -155,7 +144,7 @@ public class HistogramPage extends AppCompatActivity {
                 if (imageType == 0) {
                     BmMain = ImageWork.convertToGray(BmMain);
 
-                    Im_main = new GrayImage(BmMain);
+                    Im_main = new GrayFull(BmMain);
                 }
                 else
                     Im_main = new ColorImage(BmMain);
@@ -210,42 +199,11 @@ public class HistogramPage extends AppCompatActivity {
 
         savedInstanceState.putParcelable("selectedImage1", BmMain);
         savedInstanceState.putParcelable("selectedImage2", BmHistogramEqaulised);
-       /* savedInstanceState.putParcelable("selectedImage_original", OriginalImage);
-        savedInstanceState.putParcelable("selectedImage_negative", NegativeImage);*/
         savedInstanceState.putInt("selectedActivate_buttom", btmActivate.getVisibility());
         savedInstanceState.putParcelable("selectImageWorkMain", Im_main);
         savedInstanceState.putParcelable("selectImageWorkHistEqualise", Im_hist_equal);
         savedInstanceState.putString("imagePathCamera", camPath);
     }
-
-
-   /* // рисует гистограмму
-    public void BuilingHisogram(View v) {
-        if (BmHistogram == null)
-        try {
-            //BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
-          //  if (Im == null)
-          //      Im = new ImageWork(BmMain, R.color.background_main);
-            gv.removeAllSeries();
-            Im.insertGgraph(gv);
-
-            OriginalImage = Im.get_gitogram(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH, Colors.get(0).getKey(), Colors.get(0).getValue());
-            NegativeImage = Im.get_gitogram(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH, Colors.get(1).getKey(), Colors.get(1).getValue());
-
-            if (hist_reverse)
-                BmHistogram = NegativeImage;
-            else BmHistogram = OriginalImage;
-
-            Image2.setImageBitmap(BmHistogram);
-
-            btmActivate.setVisibility(View.INVISIBLE);
-            Image2.setVisibility(View.VISIBLE);
-            gv.setVisibility(View.VISIBLE);
-        }
-        catch (Exception e) {
-            Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     public void BuilingHisogram(View v) {
 
@@ -258,6 +216,8 @@ public class HistogramPage extends AppCompatActivity {
                 Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
             }
     }
+
+
 
     private String fromInt(int val)
     {
@@ -276,32 +236,37 @@ public class HistogramPage extends AppCompatActivity {
                 }
         );
     }
-
-
-    private void SavePhoto(Bitmap bitmap) {
-
+    public static File createFile(String DirNmae, String Fname, Context context) {
         Boolean b = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
         String file_path;
-            if(b)
-            {
-                // yes SD-card is present
-                file_path = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name);
-                Log.d("1", "was ues sd");
-            }
-            else
-            {
-                file_path = this.getFilesDir().getPath();
-                Log.d("1", "was ues storage");
-            }
+        if(b)
+        {
+            // yes SD-card is present
+            file_path = Environment.getExternalStorageDirectory() + File.separator + DirNmae;
+            Log.d("1", "was ues sd");
+        }
+        else
+        {
+            file_path = context.getFilesDir().getPath();
+            Log.d("1", "was ues storage");
+        }
 
 
-            File dir = new File(file_path);
+        File dir = new File(file_path);
 
-            if(!dir.exists())
-                dir.mkdirs();
-            Log.d("1", dir.getPath());
-            File file = new File(dir, getResources().getString(R.string.app_name) + getCurTime() + ".png");
-            Log.d("2", file.getPath());
+        if(!dir.exists())
+            dir.mkdirs();
+        Log.d("1", dir.getPath());
+        return new File(dir, Fname);
+    }
+
+
+    private void createFileCSV(File fileN) {
+
+    }
+    private void SavePhoto(Bitmap bitmap, String fName) {
+        Boolean b = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        File file = createFile(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name) + fName == null ? getCurTime() : fName + ".png", this);
         try {
             FileOutputStream fOut = new FileOutputStream(file);
             Log.d("1", "fos");
@@ -326,24 +291,6 @@ public class HistogramPage extends AppCompatActivity {
         return formDate;
     }
 
-   /* private void ReverseColors(MenuItem item) {
-        hist_reverse = !hist_reverse;
-        item.setChecked((hist_reverse));
-        if (BmHistogram != null) {
-            BmMain = ((BitmapDrawable) Image1.getDrawable()).getBitmap();
-            Im = new ImageWork(BmMain, R.color.background_main);
-
-            if (hist_reverse)
-                // image2.setVisibility(View.INVISIBLE);
-                BmHistogram = NegativeImage;
-            else
-                // image2.setVisibility(View.VISIBLE);
-                BmHistogram = OriginalImage;
-            Image2.setImageBitmap(BmHistogram);
-        }
-    }
-
-*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -351,13 +298,30 @@ public class HistogramPage extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0:
                 if (BmHistogramEqaulised != null)
-                    SavePhoto(BmHistogramEqaulised);
+                    SavePhoto(BmHistogramEqaulised, null);
                 else
                     Toast.makeText(this, R.string.imageToSaveWasNotFound, Toast.LENGTH_LONG).show();
 
                 return true;
             case 1:
                // ReverseColors(item);
+                File f = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "or.csv", this);
+                File f1 = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "fuzzy.csv", this);
+                File f2 = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "full.csv", this);
+
+                Bitmap fz = new GrayFuzzy(BmMain).equalisedImage();
+                Bitmap fl = new GrayFull(BmMain).equalisedImage();
+                ImageWork.saveStatistic(this, Im_main, new GrayImage(fz), new GrayImage(fl),
+                        f, f1, f2);
+
+                GalleryRefresh(f);
+                GalleryRefresh(f1);
+                GalleryRefresh(f2);
+                SavePhoto(BmMain, "original");
+                SavePhoto(fz, "fuzzy");
+                SavePhoto(fl, "full");
+
+                Toast.makeText(this, "was stat", Toast.LENGTH_SHORT).show();
 
                 return true;
             case 3:
@@ -371,14 +335,6 @@ public class HistogramPage extends AppCompatActivity {
                 // Загрузка изображения из камеры
                 Intent cameraPickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //getting uri of the file
-                /*file = Uri.fromFile(CameraWork.getFile());
-
-                //Setting the file Uri to my photo
-                    cameraPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
-                Log.d("12345", "++++" + file.getPath());
-
-                startActivityForResult(cameraPickerIntent, CAMERA_REQUEST);*/
-
                 if (cameraPickerIntent.resolveActivity(getPackageManager()) != null) {
                     // Create the File where the photo should go
                     File photoFile = null;
@@ -459,9 +415,9 @@ public class HistogramPage extends AppCompatActivity {
                     getAndScalePhoto(Uri.parse(camPath));
 
             } catch (Exception e) {
-            Toast.makeText(this, R.string.camera_problem, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.camera_problem, Toast.LENGTH_SHORT).show();
+                }
+            }
+    }
 
-        }
-        }
-        }
 }

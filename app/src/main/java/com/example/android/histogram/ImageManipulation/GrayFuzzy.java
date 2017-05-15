@@ -5,61 +5,46 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.jjoe64.graphview.GraphView;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 /**
- * Created by Анатолий on 13.05.2017.
+ * Created by Анатолий on 14.05.2017.
  */
-public class GrayImage extends ImageWork implements Parcelable {
-    protected GrayImage(Parcel in) {
-        super(in);
-    }
+public class GrayFuzzy extends GrayImage implements Parcelable {
 
-    public GrayImage(Bitmap Bm)
-    {
+    public GrayFuzzy(Bitmap Bm) {
         super(Bm);
     }
 
-    // подсчитывает статистические данные по изображению
-    protected void CountHistogram() {
-        for (int i = 0; i < Bm.getHeight(); ++i)
-            for (int j = 0;j <Bm.getWidth();++j)
-                ++MainRgb[Color.red(Bm.getPixel(j, i))];
+    protected GrayFuzzy(Parcel in) {
+        super(in);
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+    }
 
-    public Bitmap equalisedImage() {
-        /*int [] h = new int[ColorsCount]; // Generate the histogram
-        int [] cumhistogram = new int[ColorsCount]; // Generate cumulative frequency histogram
-        double dim = Bm.getHeight() * Bm.getWidth();
-        double alpha = 255.0 / dim;
-        int [] Sc = new int[ColorsCount];
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
-        for (int i = 0; i < ColorsCount; ++i)
-            h[i] = MainRgb[i];
-
-        cumhistogram[0] = h[0];
-        for (int i = 1; i < ColorsCount; ++i)
-            cumhistogram[i] = h[i] + cumhistogram[i - 1];
-
-        for (int i = 0; i < ColorsCount; ++i)
-            Sc[i] = (int) Math.round( alpha * (double)cumhistogram[i]);
-
-        Bitmap bm_return = Bitmap.createBitmap(Bm.getWidth(), Bm.getHeight(), Bitmap.Config.ARGB_8888);
-
-        for (int i = 0; i < Bm.getWidth(); ++i)
-            for (int j = 0;j <Bm.getHeight();++j) {
-                int px = (int) (Sc[Color.red(Bm.getPixel(i, j))]);
-                bm_return.setPixel(i, j, Color.argb(255, px, px, px));
+    public static final Creator<GrayFuzzy> CREATOR = new Creator<GrayFuzzy>() {
+        @Override
+        public GrayFuzzy createFromParcel(Parcel in) {
+            return new GrayFuzzy(in);
         }
-        return bm_return;
 
+        @Override
+        public GrayFuzzy[] newArray(int size) {
+            return new GrayFuzzy[size];
+        }
+    };
+
+    @Override
+    public Bitmap equalisedImage() {
         double [] h = new double[ColorsCount];
 
         int nu = 4;
@@ -97,13 +82,13 @@ public class GrayImage extends ImageWork implements Parcelable {
             if (subHist == 0)
                 right = m.get(subHist);
             else
-                if (subHist == m.size() - 1)
-                    right = ColorsCount;
+            if (subHist == m.size() - 1)
+                right = ColorsCount;
             else
-                {
-                    left = m.get(subHist) + 1;
-                    right = m.get(subHist + 1);
-                }
+            {
+                left = m.get(subHist) + 1;
+                right = m.get(subHist + 1);
+            }
 
             double heig = -1;
             double low = Bm.getHeight() * Bm.getWidth();
@@ -164,29 +149,6 @@ public class GrayImage extends ImageWork implements Parcelable {
                 int px = (int) (y[Color.red(Bm.getPixel(i, j))]);
                 bm_return.setPixel(i, j, Color.argb(255, px, px, px));
             }
-        return bm_return;*/
-        return Bm;
+        return bm_return;
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<GrayImage> CREATOR = new Creator<GrayImage>() {
-        @Override
-        public GrayImage createFromParcel(Parcel in) {
-            return new GrayImage(in);
-        }
-
-        @Override
-        public GrayImage[] newArray(int size) {
-            return new GrayImage[size];
-        }
-    };
 }

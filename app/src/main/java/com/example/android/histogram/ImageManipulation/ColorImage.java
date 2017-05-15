@@ -29,6 +29,7 @@ public class ColorImage extends ImageWork implements Parcelable {
     public Bitmap equalisedImage() {
         return Bm;
     }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);

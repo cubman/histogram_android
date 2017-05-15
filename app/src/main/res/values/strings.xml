@@ -37,4 +37,5 @@
     <string name="imageWasSavedSuccesfully">Photo was saved</string>
     <string name="imageWasSavedUnsuccesfully">Photo wasn\' t saved</string>
     <string name="imageToSaveWasNotFound">Photo wasn\' t found</string>
+    <string name="changeName">change name</string>
 </resources>

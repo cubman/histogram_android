@@ -33,6 +33,41 @@ public class GrayImage extends ImageWork implements Parcelable {
     }
 
 
+    public Bitmap improveCurrentGaus() {
+        Bitmap bm_return = Bitmap.createBitmap(Bm.getWidth(), Bm.getHeight(), Bitmap.Config.ARGB_8888);
+        double [] M = new double[ColorsCount];
+        double M_2 = 0;
+        double [] D = new double[ColorsCount];;
+        double [] p = new double[ColorsCount];
+        double n = MainRgb[0] / (double) (Bm.getHeight() * Bm.getWidth());
+        M[0] =  n / ColorsCount;
+        D[0] = n * ( n - 1) / ColorsCount;
+
+        for (int i = 1; i < ColorsCount; ++i) {
+            double pi = MainRgb[i] / (double) (Bm.getHeight() * Bm.getWidth());
+            M[i] += M[i - 1] + pi * (i + 1) / ColorsCount;
+            M_2 += i * i * pi / (ColorsCount * ColorsCount);
+            D[i] += M_2 - M[i] * M[i];
+        }
+
+       /* for (int i = 0; i < ColorsCount; ++i) {
+            double xi = MainRgb[i] / (double) (Bm.getHeight() * Bm.getWidth());
+
+        }*/
+        for (int i = 0; i < ColorsCount; ++i) {
+            double xi = MainRgb[i] / (double) (Bm.getHeight() * Bm.getWidth());
+            p[i] = MainRgb[i] * 1.0 / (Math.sqrt(D[i]) * Math.sqrt(2 * Math.PI)) * Math.exp(- Math.pow(xi - M[i], 2)/(2 * D[i]));
+        }
+
+        for (int i = 0; i < Bm.getWidth(); ++i)
+            for (int j = 0;j <Bm.getHeight();++j) {
+                int px = (int) (p[Color.red(Bm.getPixel(i, j))]);
+                bm_return.setPixel(i, j, Color.argb(255, px, px, px));
+            }
+
+        return bm_return;
+    }
+
     public Bitmap equalisedImage() {
         /*int [] h = new int[ColorsCount]; // Generate the histogram
         int [] cumhistogram = new int[ColorsCount]; // Generate cumulative frequency histogram

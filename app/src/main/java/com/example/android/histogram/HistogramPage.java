@@ -1,13 +1,14 @@
 package com.example.android.histogram;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -25,17 +26,16 @@ import com.jjoe64.graphview.GraphView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.io.*;
 
 import static android.app.PendingIntent.getActivity;
 
+
 public class HistogramPage extends AppCompatActivity {
+
+
 
     private static final int GALLERY_REQUEST = 1; // флаг запроса
     private static final int CAMERA_REQUEST = 2; // флаг запроса
@@ -55,7 +55,7 @@ public class HistogramPage extends AppCompatActivity {
     private String UserName;
 
     ImageView Image1, Image2;
-    Button btmActivate;
+    protected Button btmActivate;
     private int imageType = 0;
 
     @Override
@@ -162,20 +162,31 @@ public class HistogramPage extends AppCompatActivity {
                 btmActivate.setVisibility(View.VISIBLE);
                 break;
             case 1 :
-                BmHistogramEqaulised = Im_main.equalisedImage();
-                if (imageType == 0)
-                    Im_hist_equal = new GrayImage(BmHistogramEqaulised);
-                else
-                    Im_hist_equal = new ColorImage(BmHistogramEqaulised);
+                try {
+                    BmHistogramEqaulised = Im_main.equalisedImage();
+                    if (imageType == 0)
+                        Im_hist_equal = new GrayImage(BmHistogramEqaulised);
+                    else
+                        Im_hist_equal = new ColorImage(BmHistogramEqaulised);
 
-                Image2.setImageBitmap(BmHistogramEqaulised);
-                gv_hist_equal.removeAllSeries();
-                Im_hist_equal.insertGgraph(gv_hist_equal);
+                    BmHistogramEqaulised = ((GrayImage) Im_hist_equal).improveCurrentGaus();
+
+                    if (imageType == 0)
+                        Im_hist_equal = new GrayImage(BmHistogramEqaulised);
+                    else
+                        Im_hist_equal = new ColorImage(BmHistogramEqaulised);
+
+                    Image2.setImageBitmap(BmHistogramEqaulised);
+                    gv_hist_equal.removeAllSeries();
+                    Im_hist_equal.insertGgraph(gv_hist_equal);
 
 
-                gv_hist_equal.setVisibility(View.VISIBLE);
-                Image2.setVisibility(View.VISIBLE);
-                btmActivate.setVisibility(View.INVISIBLE);
+                    gv_hist_equal.setVisibility(View.VISIBLE);
+                    Image2.setVisibility(View.VISIBLE);
+                    btmActivate.setVisibility(View.INVISIBLE);
+                } catch (Exception e) {
+                    Toast.makeText(this, R.string.data_downloading_problem, Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
 
@@ -206,15 +217,15 @@ public class HistogramPage extends AppCompatActivity {
     }
 
     public void BuilingHisogram(View v) {
-
-        if (BmHistogramEqaulised == null)
+       new SyncHistogram().execute(this);
+        /*if (BmHistogramEqaulised == null)
             try {
                 initImageWork(1);
                 btmActivate.setVisibility(View.INVISIBLE);
             }
             catch (Exception e) {
                 Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
-            }
+            }*/
     }
 
 
@@ -257,14 +268,15 @@ public class HistogramPage extends AppCompatActivity {
         if(!dir.exists())
             dir.mkdirs();
         Log.d("1", dir.getPath());
+        File f = new File(dir + File.separator + Fname);
+        if (f.exists())
+            f.delete();
+
         return new File(dir, Fname);
     }
 
 
-    private void createFileCSV(File fileN) {
-
-    }
-    private void SavePhoto(Bitmap bitmap, String fName) {
+    private void SavePhoto(Bitmap bitmap, String fName, boolean notify) {
         Boolean b = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
         File file = createFile(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name) + fName == null ? getCurTime() : fName + ".png", this);
         try {
@@ -277,7 +289,8 @@ public class HistogramPage extends AppCompatActivity {
             fOut.close();
             if (b)
                GalleryRefresh(file);
-            Toast.makeText(this, R.string.imageWasSavedSuccesfully, Toast.LENGTH_SHORT).show();
+           if (notify)
+               Toast.makeText(this, R.string.imageWasSavedSuccesfully, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(this, R.string.imageWasSavedUnsuccesfully, Toast.LENGTH_LONG).show();
         }
@@ -298,30 +311,14 @@ public class HistogramPage extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0:
                 if (BmHistogramEqaulised != null)
-                    SavePhoto(BmHistogramEqaulised, null);
+                    SavePhoto(BmHistogramEqaulised, null, true);
                 else
                     Toast.makeText(this, R.string.imageToSaveWasNotFound, Toast.LENGTH_LONG).show();
 
                 return true;
             case 1:
                // ReverseColors(item);
-                File f = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "or.csv", this);
-                File f1 = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "fuzzy.csv", this);
-                File f2 = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "full.csv", this);
-
-                Bitmap fz = new GrayFuzzy(BmMain).equalisedImage();
-                Bitmap fl = new GrayFull(BmMain).equalisedImage();
-                ImageWork.saveStatistic(this, Im_main, new GrayImage(fz), new GrayImage(fl),
-                        f, f1, f2);
-
-                GalleryRefresh(f);
-                GalleryRefresh(f1);
-                GalleryRefresh(f2);
-                SavePhoto(BmMain, "original");
-                SavePhoto(fz, "fuzzy");
-                SavePhoto(fl, "full");
-
-                Toast.makeText(this, "was stat", Toast.LENGTH_SHORT).show();
+                new LoadingStatistic().execute(BmMain);
 
                 return true;
             case 3:
@@ -420,4 +417,118 @@ public class HistogramPage extends AppCompatActivity {
             }
     }
 
+    private  class SyncHistogram extends AsyncTask<HistogramPage, Void, Bitmap> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected Bitmap doInBackground(HistogramPage ... p) {
+            Log.d("123", "3333");
+            Bitmap bm = null;
+            // Synchronize code here
+            if (p[0].BmHistogramEqaulised == null)
+                try {
+                    Log.d("123", "3333");
+                    bm = Im_main.equalisedImage();
+                    if (imageType == 0)
+                        Im_hist_equal = new GrayImage(bm);
+                    else
+                        Im_hist_equal = new ColorImage(bm);
+
+                   /* bm = ((GrayImage) Im_hist_equal).improveCurrentGaus();
+
+                    if (imageType == 0)
+                        Im_hist_equal = new GrayImage(bm);
+                    else
+                        Im_hist_equal = new ColorImage(bm);*/
+
+
+                }
+                catch (Exception e) {
+                    Toast.makeText(HistogramPage.this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
+                }
+            Log.d("123", "3333");
+            return  bm;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            BmHistogramEqaulised = result;
+            Image2.setImageBitmap(BmHistogramEqaulised);
+            gv_hist_equal.removeAllSeries();
+            Im_hist_equal.insertGgraph(gv_hist_equal);
+
+
+            gv_hist_equal.setVisibility(View.VISIBLE);
+            Image2.setVisibility(View.VISIBLE);
+            btmActivate.setVisibility(View.INVISIBLE);
+
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (progressDialog == null) {
+                progressDialog = new ProgressDialog(HistogramPage.this);
+                progressDialog.setMessage(getResources().getText(R.string.counting_Hist));
+                progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+            }
+
+
+        }
+
+    }
+
+    private  class LoadingStatistic extends AsyncTask<Bitmap, Void, Void> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected Void doInBackground(Bitmap... p) {
+            Log.d("123", "3333");
+            File f = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "original.csv", HistogramPage.this);
+            File f1 = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "fuzzy.csv", HistogramPage.this);
+            File f2 = createFile(getResources().getString(R.string.app_name) + File.separator + "Statistic", "full.csv", HistogramPage.this);
+
+            Bitmap fz = new GrayFuzzy(p[0]).equalisedImage();
+            Bitmap fl = new GrayFull(p[0]).equalisedImage();
+            //ImageWork.saveStatistic(HistogramPage.this, Im_main, new GrayImage(fz), new GrayImage(fl),
+             //       f, f1, f2);
+
+            GalleryRefresh(f);
+            GalleryRefresh(f1);
+            GalleryRefresh(f2);
+            SavePhoto(p[0], "original", false);
+            SavePhoto(fz, "fuzzy", false);
+            SavePhoto(fl, "full", false);
+
+            //
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            Toast.makeText(HistogramPage.this, getResources().getText(R.string.statistic_saved), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (progressDialog == null) {
+                progressDialog = new ProgressDialog(HistogramPage.this);
+                progressDialog.setMessage(getResources().getText(R.string.statistic_Counting));
+                progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+            }
+
+
+        }
+    }
 }

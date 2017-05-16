@@ -119,7 +119,7 @@ public class GrayFuzzy extends GrayImage implements Parcelable {
         for (int subHist = 1 ; subHist < m.size(); ++subHist) {
             start[subHist] = (int)range_sum + 1;
             range_sum += range[subHist];
-            stop[subHist] = (int)range_sum;
+            stop[subHist] = (int)Math.round(range_sum);
         }
         start[m.size()] = (int)range_sum;
         stop[m.size()] = ColorsCount - 1;

@@ -38,4 +38,7 @@
     <string name="imageWasSavedUnsuccesfully">Photo wasn\' t saved</string>
     <string name="imageToSaveWasNotFound">Photo wasn\' t found</string>
     <string name="changeName">change name</string>
+    <string name="counting_Hist">Histogram counting, please wait...</string>
+    <string name="statistic_Counting">Statistic counting, please wait...</string>
+    <string name="statistic_saved">Statistic counted</string>
 </resources>

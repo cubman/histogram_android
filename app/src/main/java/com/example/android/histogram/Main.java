@@ -1,6 +1,7 @@
 package com.example.android.histogram;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,8 @@ public class Main extends AppCompatActivity {
             EnterField(false);
         else
             EnterField(true);
+
+
     }
 
     @Override

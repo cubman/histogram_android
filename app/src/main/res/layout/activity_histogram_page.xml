@@ -63,7 +63,7 @@
             android:layout_height="@integer/max_GraphView_heigh"
             android:id="@+id/graph_main"
             android:layout_marginLeft="@dimen/around_main_border"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <ImageView
             android:layout_width="match_parent"

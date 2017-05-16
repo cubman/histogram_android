@@ -32,9 +32,6 @@ public abstract class ImageWork implements Parcelable {
         Normalised = normalise();
     }
 
-    public void setBitmap(Bitmap newBm) {
-        this.Bm = newBm;
-    }
     // нормализует гистограмму
     protected double[] normalise() {
         double [] res = new double[MainRgb.length];
@@ -62,7 +59,7 @@ public abstract class ImageWork implements Parcelable {
             Log.d("333", "was written");
         } catch (Exception e) {
             Log.d("333", "was not written");
-            Toast.makeText(context, "was stat", Toast.LENGTH_SHORT).show();
+           /// Toast.makeText(context, "was stat", Toast.LENGTH_SHORT).show();
         }
     }
     public static void saveStatistic(Context context, ImageWork original, ImageWork fuzzy, ImageWork full, File originalCSV, File fuzzyCSV, File fullCSV) {

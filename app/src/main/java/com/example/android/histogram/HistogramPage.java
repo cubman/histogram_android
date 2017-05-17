@@ -138,13 +138,13 @@ public class HistogramPage extends AppCompatActivity {
                 sMenu.add(0, 4, 0, R.string.camera);
             sMenu.add(0, 5, 0, R.string.randomPhoto);
 
-        SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, "Gray");
-            sMenu2.add(0, 7, 0, "Full");
-            sMenu2.add(0, 8, 0, "Fuzzy");
-            sMenu2.add(0, 9, 0, "Filter").setCheckable(true).setChecked(false);
+        SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, R.string.GrayMenu);
+            sMenu2.add(0, 7, 0, R.string.FuzzySubMenuGray);
+            sMenu2.add(0, 8, 0, R.string.FuzzySubMenuGray);
+            sMenu2.add(0, 9, 0, R.string.FilterSubMenuGray).setCheckable(true).setChecked(false);
 
-        SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, "Color");
-            sMenu3.add(0, 11, 0, "Full");
+        SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, R.string.ColorMenu);
+            sMenu3.add(0, 11, 0, R.string.FullSubMenuColor);
 
         this.menu = menu;
         return true;
@@ -228,14 +228,6 @@ public class HistogramPage extends AppCompatActivity {
 
     public void BuilingHisogram(View v) {
 
-        /*if (BmHistogramEqaulised == null)
-            try {
-                initImageWork(1);
-                btmActivate.setVisibility(View.INVISIBLE);
-            }
-            catch (Exception e) {
-                Toast.makeText(this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
-            }*/
     }
 
 
@@ -262,7 +254,6 @@ public class HistogramPage extends AppCompatActivity {
         String file_path;
         if(b)
         {
-            // yes SD-card is present
             file_path = Environment.getExternalStorageDirectory() + File.separator + DirNmae;
             Log.d("1", "was ues sd");
         }
@@ -403,29 +394,14 @@ public class HistogramPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-     SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
-            sMenu.add(0, 3, 0, R.string.gallery);
-            if (checkCameraHardware(this))
-                 sMenu.add(0, 4, 0, R.string.camera);
-            sMenu.add(0, 5, 0, R.string.randomPhoto);
-
-        SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, "Gray");
-            sMenu2.add(0, 7, 0, "Full");
-            sMenu2.add(0, 8, 0, "Fuzzy");
-            sMenu2.add(0, 9, 0, "Filter").setCheckable(true).setChecked(false);
-
-        SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, "Color");
-            sMenu3.add(0, 11, 0, "Full");
-            */
 
     private File getFile() throws IOException {
-        String imageFileName = "JPEG_" + getCurTime() + "_";
+        String imageFileName = "JPG_" + getCurTime() + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
         camPath = image.getAbsolutePath();
         return image;
@@ -455,8 +431,6 @@ public class HistogramPage extends AppCompatActivity {
             if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
                 try {
                    getAndScalePhoto(data.getData());
-
-
                 } catch (Exception e) {
                     Toast.makeText(this, R.string.gallery_problem, Toast.LENGTH_SHORT).show();
                 }
@@ -477,28 +451,14 @@ public class HistogramPage extends AppCompatActivity {
         ProgressDialog progressDialog;
 
         @Override
-        protected Bitmap doInBackground(Pair<ChooseAction, Boolean> ... p) {
-            Log.d("123", "3333");
-
-            // Synchronize code here
+        protected Bitmap doInBackground(Pair<ChooseAction, Boolean>... p) {
             try {
-                Log.d("123", "3333");
                 Im_hist_equal = p[0].first.returnNewImage(Im_main, p[0].second);
-
-               /*
-
-                if (imageType == 0)
-                    Im_hist_equal = new GrayImage(bm);
-                else
-                    Im_hist_equal = new ColorImage(bm);*/
-
-
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Toast.makeText(HistogramPage.this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
             }
-            Log.d("123", "3333");
-            return  Im_hist_equal.getCurrentImage();
+
+            return Im_hist_equal.getCurrentImage();
         }
 
         @Override
@@ -507,6 +467,7 @@ public class HistogramPage extends AppCompatActivity {
 
             Image1.setImageBitmap(Im_main.getCurrentImage());
             Image2.setImageBitmap(BmHistogramEqaulised);
+
             gv_hist_equal.removeAllSeries();
             Im_hist_equal.insertGgraph(gv_hist_equal);
 
@@ -532,16 +493,10 @@ public class HistogramPage extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
             }
-
-
         }
-
     }
 
     private  class LoadingStatistic extends AsyncTask<Bitmap, Void, Void> {
-
-        ProgressDialog progressDialog;
-
         @Override
         protected Void doInBackground(Bitmap... p) {
             Log.d("123", "3333");
@@ -560,29 +515,13 @@ public class HistogramPage extends AppCompatActivity {
             SavePhoto(fz, "fuzzy", false);
             SavePhoto(fl, "full", false);
 
-            //
             return null;
         }
 
         @Override
         protected void onPostExecute(Void v) {
-           /* if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }*/
             Toast.makeText(HistogramPage.this, getResources().getText(R.string.statistic_saved), Toast.LENGTH_SHORT).show();
         }
 
-        @Override
-        protected void onPreExecute() {
-          /*  if (progressDialog == null) {
-                progressDialog = new ProgressDialog(HistogramPage.this);
-                progressDialog.setMessage(getResources().getText(R.string.statistic_Counting));
-                progressDialog.show();
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setCancelable(false);
-            }*/
-
-
-        }
     }
 }

@@ -41,4 +41,10 @@
     <string name="counting_Hist">Histogram counting, please wait...</string>
     <string name="statistic_Counting">Statistic counting, please wait...</string>
     <string name="statistic_saved">Statistic counted</string>
+    <string name="GrayMenu">Gray image</string>
+    <string name="FullSubMenuGray">Full equalisation</string>
+    <string name="FuzzySubMenuGray">Fuzzy equalisation</string>
+    <string name="FilterSubMenuGray">Filter</string>
+    <string name="ColorMenu">Color image</string>
+    <string name="FullSubMenuColor">Full equalisation</string>
 </resources>

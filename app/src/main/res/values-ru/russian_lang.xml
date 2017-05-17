@@ -36,8 +36,14 @@
     <string name="imageWasSavedSuccesfully">Фото было успешно сохранено</string>
     <string name="imageWasSavedUnsuccesfully">Фото не было сохранено</string>
     <string name="imageToSaveWasNotFound">Фото для сохранения не найдено</string>
-    <string name="changeName">изменить имя</string>
+    <string name="changeName">Изменить имя</string>
     <string name="counting_Hist">Вычисляется гистограмма, подождите...</string>
     <string name="statistic_Counting">Подсчитывается статистика, подождите...</string>
-    <string name="statistic_saved">Statistic counted</string>
+    <string name="statistic_saved">Статистика посчитана</string>
+    <string name="GrayMenu">Полутоновое изображение</string>
+    <string name="FullSubMenuGray">Полная эквивализация</string>
+    <string name="FuzzySubMenuGray">Кусочная эквивализация</string>
+    <string name="FilterSubMenuGray">Фильтр</string>
+    <string name="ColorMenu">Цветное изображение</string>
+    <string name="FullSubMenuColor">Полная эквивализация</string>
 </resources>

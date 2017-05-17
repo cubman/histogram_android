@@ -38,11 +38,29 @@ public class GrayImage extends ImageWork implements Parcelable {
         Matrix m = new Matrix(size, size);
         double stdv = 0.3;
         double r, s = 2.0 * stdv * stdv;
-        double sum = 0.0; 
+        double sum = 0.0;
         int mid = size / 2;
         for (int x = -mid; x <= mid; x++) // Loop to generate 5x5 kernel
             for(int y = -mid; y <= mid; y++)
-                sum += m.data[x + 2][y + 2] = (Math.exp(-(x * x + y * y) / s))/(Math.PI * s);
+                sum += m.data[x + mid][y + mid] = (Math.exp(-(x * x + y * y) / s))/(Math.PI * s);
+
+
+        for(int i = 0; i < size; ++i) // Loop to normalize the kernel
+            for(int j = 0; j < size; ++j)
+                m.data[i][j] /= sum;
+
+        return m;
+    }
+
+    private Matrix getKernel2(int size) {
+        Matrix m = new Matrix(size, size);
+        double stdv = 0.3;
+        double r, s = stdv * stdv;
+        double sum = 0.0;
+        int mid = size / 2;
+        for (int x = -mid; x <= mid; x++) // Loop to generate 5x5 kernel
+            for(int y = -mid; y <= mid; y++)
+                sum += x + y < 0 ? 0 : (m.data[x + mid][y + mid] = (x + y) / s * (Math.exp(-(x * x + y * y) / s)));
 
 
         for(int i = 0; i < size; ++i) // Loop to normalize the kernel
@@ -53,9 +71,9 @@ public class GrayImage extends ImageWork implements Parcelable {
     }
 
     public Bitmap improveCurrentGaus() {
-        int sz = 5;
+        int sz = 7;
         int mid = sz / 2;
-        Matrix filter = getKernel(sz);
+        Matrix filter = getKernel2(sz);
         Matrix image = new Matrix(Bm, mid);
 
         Bitmap bm_return = Bitmap.createBitmap(Bm.getWidth(), Bm.getHeight(), Bitmap.Config.ARGB_8888);

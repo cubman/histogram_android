@@ -121,13 +121,9 @@ public class HistogramPage extends AppCompatActivity {
         return  context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 
-    private void addItem(MenuItem menuItem) {
-        this.menu.add(menuItem.getGroupId(), menuItem.getItemId(), menuItem.getOrder(), menuItem.getTitle());
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // show menu when menu button is pressed
-        //MenuInflater inflater = getMenuInflater();
+
         getMenuInflater().inflate(R.menu.menu_histogram, menu);
         menu.add(0, 0, 0, R.string.save);
         menu.add(0, 1, 0, "save statistic");
@@ -154,11 +150,7 @@ public class HistogramPage extends AppCompatActivity {
     private void initImageWork(int blockInit) {
         switch (blockInit) {
             case 0 :
-
-
                 Image1.setImageBitmap(BmMain == null ? BmOriginal : BmMain);
-
-
 
                 gv_main.setVisibility(View.GONE);
                 gv_hist_equal.setVisibility(View.GONE);
@@ -167,21 +159,6 @@ public class HistogramPage extends AppCompatActivity {
                 break;
             case 1 :
                 try {
-                   /* BmHistogramEqaulised = Im_main.equalisedImage();
-                    if (imageType == 0) {
-                        Im_hist_equal = new GrayImage(BmHistogramEqaulised);
-                        BmHistogramEqaulised = ((GrayImage) Im_hist_equal).improveCurrentGaus();
-                    }
-                    else
-                        Im_hist_equal = new ColorImage(BmHistogramEqaulised);
-
-
-
-                    if (imageType == 0)
-                        Im_hist_equal = new GrayImage(BmHistogramEqaulised);
-                    else
-                        Im_hist_equal = new ColorImage(BmHistogramEqaulised);*/
-
                     gv_main.removeAllSeries();
                     Im_main.insertGgraph(gv_main);
 
@@ -202,7 +179,7 @@ public class HistogramPage extends AppCompatActivity {
     }
 
     private void setRandomImage() {
-        BmOriginal = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
+        BmMain = BmOriginal = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
         initImageWork(0);
     }
     // возвращает произвольную фоторафию из списка содержимого
@@ -227,28 +204,20 @@ public class HistogramPage extends AppCompatActivity {
     }
 
     public void BuilingHisogram(View v) {
-
-    }
-
-
-
-    private String fromInt(int val)
-    {
-        return String.valueOf(val);
+        // Кнопка активации, которая не активна
     }
 
     public void GalleryRefresh(File file)
     {
-        //this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
         MediaScannerConnection.scanFile(this,
-                new String[]{file.getAbsolutePath()}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
+                new String[]{file.getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
                     public void onScanCompleted(String path, Uri uri) {
-                        //now visible in gallery
+
                     }
                 }
         );
     }
+
     public static File createFile(String DirNmae, String Fname, Context context) {
         Boolean b = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
         String file_path;
@@ -328,6 +297,7 @@ public class HistogramPage extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                Im_hist_equal = null;
                 return true;
             case 4:
 
@@ -343,24 +313,23 @@ public class HistogramPage extends AppCompatActivity {
                     } catch (Exception e) {
                         Log.d("12345", "++++" + "000000");
                     }
-                    Log.d("12345", "++++" + "1");
-                    // Continue only if the File was successfully created
+
                     if (photoFile != null) {
 
                         file = Uri.fromFile(photoFile);
                         camPath = file.toString();
-                        Log.d("12345", "++++" + "2" + file.getPath() + " " + camPath);
+
                         cameraPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
 
-                        Log.d("12345", "++++" + "3");
-
                         startActivityForResult(cameraPickerIntent, CAMERA_REQUEST);
+                        Im_hist_equal = null;
                     }
                 }
                 return true;
             case 5:
                 // Загрузка изображения из имеющихся
                 setRandomImage();
+                Im_hist_equal = null;
                 return true;
 
             case 7 :
@@ -421,6 +390,7 @@ public class HistogramPage extends AppCompatActivity {
         if (BmOriginal == null)
             Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
 
+        BmMain = BmOriginal;
         initImageWork(0);
     }
 

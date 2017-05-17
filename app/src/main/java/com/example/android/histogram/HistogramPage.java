@@ -139,9 +139,9 @@ public class HistogramPage extends AppCompatActivity {
             sMenu.add(0, 5, 0, R.string.randomPhoto);
 
         SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, R.string.GrayMenu);
-            sMenu2.add(0, 7, 0, R.string.FuzzySubMenuGray);
+            sMenu2.add(0, 7, 0, R.string.FullSubMenuGray);
             sMenu2.add(0, 8, 0, R.string.FuzzySubMenuGray);
-            sMenu2.add(0, 9, 0, R.string.FilterSubMenuGray).setCheckable(true).setChecked(false);
+            sMenu2.add(0, 9, 0, R.string.FilterSubMenuGray).setCheckable(true).setChecked(true);
 
         SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, R.string.ColorMenu);
             sMenu3.add(0, 11, 0, R.string.FullSubMenuColor);

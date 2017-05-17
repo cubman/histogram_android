@@ -1,5 +1,8 @@
 package com.example.android.histogram;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
 /**
  * Created by Анатолий on 16.05.2017.
  */
@@ -25,15 +28,38 @@ final public class Matrix {
                 this.data[i][j] = data[i][j];
     }
 
-    // copy constructor
-    private Matrix(Matrix A) {
-        this(A.data);
+    public double ComponentProd(Matrix B, int startX, int startY) {
+        double res = 0.0;
+
+        for (int i = 0; i < M; i++)
+            for (int j = 0; j < N; j++)
+                res += B.data[i + startX][j + startY] * data[i][j];
+
+        return res;
     }
 
-    public void setIJ(int i, int  j, double value) {
-        if (i > M || i < 0 || j < 0 || j > N) throw new IndexOutOfBoundsException("Illegal matrix dimensions.");
-        data[i][j] = value;
+    public Matrix(Bitmap b, int add) {
+        this.M = b.getWidth();
+        this.N = b.getHeight();
+        data = new double[M + 2 * add][N + 2 * add];
+
+        for (int i = add; i < M + add; i++)
+            for (int j = add; j < N + add; j++)
+                data[i][j] = Color.red(b.getPixel(i - add, j - add));
+
+        for (int i = 0; i < M + add; ++i)
+            for (int j = 0; j < add; ++j) {
+                data[i][j] = data[i][j + add + 1];
+                data[i][j + N + add] = data[i][j + N];
+            }
+
+        for (int i = 0; i < N + add; ++i)
+            for (int j = 0; j < add; ++j) {
+                data[j][i] = data[j + add + 1][i];
+                data[j + M + add][i] = data[j + M][i];
+            }
     }
+
     // return C = A * B
     public Matrix times(Matrix B) {
         Matrix A = this;

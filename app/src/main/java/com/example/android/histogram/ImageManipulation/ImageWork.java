@@ -32,6 +32,15 @@ public abstract class ImageWork implements Parcelable {
         Normalised = normalise();
     }
 
+    public ImageWork(ImageWork imageWork) {
+        Bm = imageWork.Bm;
+        Normalised = new double[ColorsCount];
+        for (int i = 0; i < ColorsCount; ++i) {
+            Normalised[i] = imageWork.Normalised[i];
+            MainRgb[i] = imageWork.MainRgb[i];
+        }
+    }
+
     // нормализует гистограмму
     protected double[] normalise() {
         double [] res = new double[MainRgb.length];
@@ -62,6 +71,11 @@ public abstract class ImageWork implements Parcelable {
            /// Toast.makeText(context, "was stat", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public Bitmap getCurrentImage() {
+        return Bm;
+    }
+
     public static void saveStatistic(Context context, ImageWork original, ImageWork fuzzy, ImageWork full, File originalCSV, File fuzzyCSV, File fullCSV) {
        /* original.CountHistogram();
         fuzzy.CountHistogram();

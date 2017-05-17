@@ -14,9 +14,14 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.*;
 import android.widget.*;
 
+import com.example.android.histogram.ActionChoose.ChooseAction;
+import com.example.android.histogram.ActionChoose.ColorAction;
+import com.example.android.histogram.ActionChoose.FullAction;
+import com.example.android.histogram.ActionChoose.FuzzyAction;
 import com.example.android.histogram.ImageManipulation.ColorImage;
 import com.example.android.histogram.ImageManipulation.GrayFull;
 import com.example.android.histogram.ImageManipulation.GrayFuzzy;
@@ -49,7 +54,7 @@ public class HistogramPage extends AppCompatActivity {
     private ImageWork Im_main, Im_hist_equal; // класс для работы с изображениями
     private Uri file;
     private String camPath;
-    Bitmap BmMain, BmHistogramEqaulised;//, OriginalImage, NegativeImage;
+    Bitmap BmOriginal, BmMain, BmHistogramEqaulised;//, OriginalImage, NegativeImage;
 
    // private List<Map.Entry<String, String>> Colors = new LinkedList<>();
     private String UserName;
@@ -57,6 +62,7 @@ public class HistogramPage extends AppCompatActivity {
     ImageView Image1, Image2;
     protected Button btmActivate;
     private int imageType = 0;
+    protected Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +86,7 @@ public class HistogramPage extends AppCompatActivity {
             btmActivate = (Button) findViewById(R.id.button_build_histogram);
 
             if (savedInstanceState != null) {
-
+                BmOriginal = savedInstanceState.getParcelable("OriginalImage");
                 BmMain = savedInstanceState.getParcelable("selectedImage1");
                 BmHistogramEqaulised = savedInstanceState.getParcelable("selectedImage2");
                 btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
@@ -111,29 +117,36 @@ public class HistogramPage extends AppCompatActivity {
         }
     }
 
-    private  void setEqualisedData() {
-
-    }
-
     private boolean checkCameraHardware(Context context) {
         return  context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 
+    private void addItem(MenuItem menuItem) {
+        this.menu.add(menuItem.getGroupId(), menuItem.getItemId(), menuItem.getOrder(), menuItem.getTitle());
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // show menu when menu button is pressed
         //MenuInflater inflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu_histogram, menu);
         menu.add(0, 0, 0, R.string.save);
-        menu.add(0, 1, 0, "save Statistic");
+        menu.add(0, 1, 0, "save statistic");
 
         SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
             sMenu.add(0, 3, 0, R.string.gallery);
             if (checkCameraHardware(this))
-                 sMenu.add(0, 4, 0, R.string.camera);
+                sMenu.add(0, 4, 0, R.string.camera);
             sMenu.add(0, 5, 0, R.string.randomPhoto);
 
+        SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, "Gray");
+            sMenu2.add(0, 7, 0, "Full");
+            sMenu2.add(0, 8, 0, "Fuzzy");
+            sMenu2.add(0, 9, 0, "Filter").setCheckable(true).setChecked(false);
 
+        SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, "Color");
+            sMenu3.add(0, 11, 0, "Full");
+
+        this.menu = menu;
         return true;
     }
 
@@ -141,46 +154,42 @@ public class HistogramPage extends AppCompatActivity {
     private void initImageWork(int blockInit) {
         switch (blockInit) {
             case 0 :
-                if (imageType == 0) {
-                    BmMain = ImageWork.convertToGray(BmMain);
 
-                    Im_main = new GrayFull(BmMain);
-                }
-                else
-                    Im_main = new ColorImage(BmMain);
 
-                Image1.setImageBitmap(BmMain);
-                gv_main.removeAllSeries();
-                Im_main.insertGgraph(gv_main);
+                Image1.setImageBitmap(BmMain == null ? BmOriginal : BmMain);
 
 
 
-
-                Image2.setImageBitmap(BmHistogramEqaulised = null);
+                gv_main.setVisibility(View.GONE);
                 gv_hist_equal.setVisibility(View.GONE);
                 Image2.setVisibility(View.GONE);
-                btmActivate.setVisibility(View.VISIBLE);
+                btmActivate.setVisibility(View.INVISIBLE);
                 break;
             case 1 :
                 try {
-                    BmHistogramEqaulised = Im_main.equalisedImage();
-                    if (imageType == 0)
+                   /* BmHistogramEqaulised = Im_main.equalisedImage();
+                    if (imageType == 0) {
                         Im_hist_equal = new GrayImage(BmHistogramEqaulised);
+                        BmHistogramEqaulised = ((GrayImage) Im_hist_equal).improveCurrentGaus();
+                    }
                     else
                         Im_hist_equal = new ColorImage(BmHistogramEqaulised);
 
-                    BmHistogramEqaulised = ((GrayImage) Im_hist_equal).improveCurrentGaus();
+
 
                     if (imageType == 0)
                         Im_hist_equal = new GrayImage(BmHistogramEqaulised);
                     else
-                        Im_hist_equal = new ColorImage(BmHistogramEqaulised);
+                        Im_hist_equal = new ColorImage(BmHistogramEqaulised);*/
+
+                    gv_main.removeAllSeries();
+                    Im_main.insertGgraph(gv_main);
 
                     Image2.setImageBitmap(BmHistogramEqaulised);
                     gv_hist_equal.removeAllSeries();
                     Im_hist_equal.insertGgraph(gv_hist_equal);
 
-
+                    gv_main.setVisibility(View.VISIBLE);
                     gv_hist_equal.setVisibility(View.VISIBLE);
                     Image2.setVisibility(View.VISIBLE);
                     btmActivate.setVisibility(View.INVISIBLE);
@@ -193,7 +202,7 @@ public class HistogramPage extends AppCompatActivity {
     }
 
     private void setRandomImage() {
-        BmMain = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
+        BmOriginal = BitmapFactory.decodeResource(getResources(), GetRamdomImage());
         initImageWork(0);
     }
     // возвращает произвольную фоторафию из списка содержимого
@@ -208,6 +217,7 @@ public class HistogramPage extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
+        savedInstanceState.putParcelable("OriginalImage", BmOriginal);
         savedInstanceState.putParcelable("selectedImage1", BmMain);
         savedInstanceState.putParcelable("selectedImage2", BmHistogramEqaulised);
         savedInstanceState.putInt("selectedActivate_buttom", btmActivate.getVisibility());
@@ -217,7 +227,7 @@ public class HistogramPage extends AppCompatActivity {
     }
 
     public void BuilingHisogram(View v) {
-       new SyncHistogram().execute(this);
+
         /*if (BmHistogramEqaulised == null)
             try {
                 initImageWork(1);
@@ -304,6 +314,7 @@ public class HistogramPage extends AppCompatActivity {
         return formDate;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -360,9 +371,53 @@ public class HistogramPage extends AppCompatActivity {
                 // Загрузка изображения из имеющихся
                 setRandomImage();
                 return true;
+
+            case 7 :
+                BmMain = ImageWork.convertToGray(BmOriginal);
+                Im_main = new GrayFull(BmMain);
+
+                initImageWork(0);
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new FullAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+                return true;
+
+            case 8 :
+                BmMain = ImageWork.convertToGray(BmOriginal);
+                Im_main = new GrayFuzzy(BmMain);
+
+                initImageWork(0);
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new FuzzyAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+                return true;
+
+            case 9:
+                item.setChecked(!item.isChecked());
+
+                return false;
+
+            case 11:
+                Im_main = new ColorImage(BmOriginal);
+
+                initImageWork(0);
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new ColorAction(),false));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /*
+     SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
+            sMenu.add(0, 3, 0, R.string.gallery);
+            if (checkCameraHardware(this))
+                 sMenu.add(0, 4, 0, R.string.camera);
+            sMenu.add(0, 5, 0, R.string.randomPhoto);
+
+        SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, "Gray");
+            sMenu2.add(0, 7, 0, "Full");
+            sMenu2.add(0, 8, 0, "Fuzzy");
+            sMenu2.add(0, 9, 0, "Filter").setCheckable(true).setChecked(false);
+
+        SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, "Color");
+            sMenu3.add(0, 11, 0, "Full");
+            */
 
     private File getFile() throws IOException {
         String imageFileName = "JPEG_" + getCurTime() + "_";
@@ -379,15 +434,15 @@ public class HistogramPage extends AppCompatActivity {
     private void getAndScalePhoto(Uri data) throws FileNotFoundException {
         BitmapFactory.Options options = new BitmapFactory.Options();
 
-        BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(data));
+        BmOriginal = BitmapFactory.decodeStream(getContentResolver().openInputStream(data));
 
 
-        if (BmMain.getHeight() > MAIN_IMAGE_HEIGHT || BmMain.getWidth() > MAIN_IMAGE_WIDTH) {
+        if (BmOriginal.getHeight() > MAIN_IMAGE_HEIGHT || BmOriginal.getWidth() > MAIN_IMAGE_WIDTH) {
             options.inSampleSize = getResources().getInteger(R.integer.image_scale);
-            BmMain = BitmapFactory.decodeStream(getContentResolver().openInputStream(data), null, options);
+            BmOriginal = BitmapFactory.decodeStream(getContentResolver().openInputStream(data), null, options);
         }
 
-        if (BmMain == null)
+        if (BmOriginal == null)
             Toast.makeText(this, R.string.image_was_not_downloaded, Toast.LENGTH_SHORT).show();
 
         initImageWork(0);
@@ -417,48 +472,48 @@ public class HistogramPage extends AppCompatActivity {
             }
     }
 
-    private  class SyncHistogram extends AsyncTask<HistogramPage, Void, Bitmap> {
+    private  class SyncHistogram extends AsyncTask<Pair<ChooseAction, Boolean>, Void, Bitmap> {
 
         ProgressDialog progressDialog;
 
         @Override
-        protected Bitmap doInBackground(HistogramPage ... p) {
+        protected Bitmap doInBackground(Pair<ChooseAction, Boolean> ... p) {
             Log.d("123", "3333");
-            Bitmap bm = null;
+
             // Synchronize code here
-            if (p[0].BmHistogramEqaulised == null)
-                try {
-                    Log.d("123", "3333");
-                    bm = Im_main.equalisedImage();
-                    if (imageType == 0)
-                        Im_hist_equal = new GrayImage(bm);
-                    else
-                        Im_hist_equal = new ColorImage(bm);
+            try {
+                Log.d("123", "3333");
+                Im_hist_equal = p[0].first.returnNewImage(Im_main, p[0].second);
 
-                   /* bm = ((GrayImage) Im_hist_equal).improveCurrentGaus();
+               /*
 
-                    if (imageType == 0)
-                        Im_hist_equal = new GrayImage(bm);
-                    else
-                        Im_hist_equal = new ColorImage(bm);*/
+                if (imageType == 0)
+                    Im_hist_equal = new GrayImage(bm);
+                else
+                    Im_hist_equal = new ColorImage(bm);*/
 
 
-                }
-                catch (Exception e) {
-                    Toast.makeText(HistogramPage.this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
-                }
+            }
+            catch (Exception e) {
+                Toast.makeText(HistogramPage.this, R.string.histogram_downloading_problem, Toast.LENGTH_SHORT).show();
+            }
             Log.d("123", "3333");
-            return  bm;
+            return  Im_hist_equal.getCurrentImage();
         }
 
         @Override
         protected void onPostExecute(Bitmap result) {
             BmHistogramEqaulised = result;
+
+            Image1.setImageBitmap(Im_main.getCurrentImage());
             Image2.setImageBitmap(BmHistogramEqaulised);
             gv_hist_equal.removeAllSeries();
             Im_hist_equal.insertGgraph(gv_hist_equal);
 
+            gv_main.removeAllSeries();
+            Im_main.insertGgraph(gv_main);
 
+            gv_main.setVisibility(View.VISIBLE);
             gv_hist_equal.setVisibility(View.VISIBLE);
             Image2.setVisibility(View.VISIBLE);
             btmActivate.setVisibility(View.INVISIBLE);
@@ -496,8 +551,7 @@ public class HistogramPage extends AppCompatActivity {
 
             Bitmap fz = new GrayFuzzy(p[0]).equalisedImage();
             Bitmap fl = new GrayFull(p[0]).equalisedImage();
-            //ImageWork.saveStatistic(HistogramPage.this, Im_main, new GrayImage(fz), new GrayImage(fl),
-             //       f, f1, f2);
+            ImageWork.saveStatistic(HistogramPage.this, Im_main, new GrayImage(fz), new GrayImage(fl), f, f1, f2);
 
             GalleryRefresh(f);
             GalleryRefresh(f1);
@@ -512,21 +566,21 @@ public class HistogramPage extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void v) {
-            if (progressDialog.isShowing()) {
+           /* if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
-            }
+            }*/
             Toast.makeText(HistogramPage.this, getResources().getText(R.string.statistic_saved), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected void onPreExecute() {
-            if (progressDialog == null) {
+          /*  if (progressDialog == null) {
                 progressDialog = new ProgressDialog(HistogramPage.this);
                 progressDialog.setMessage(getResources().getText(R.string.statistic_Counting));
                 progressDialog.show();
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
-            }
+            }*/
 
 
         }

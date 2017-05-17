@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.android.histogram.Matrix;
 import com.jjoe64.graphview.GraphView;
 
 import java.util.ArrayList;
@@ -32,6 +33,24 @@ public class GrayImage extends ImageWork implements Parcelable {
                 ++MainRgb[Color.red(Bm.getPixel(j, i))];
     }
 
+
+    private Matrix getKernelGaus(int size) {
+        Matrix m = new Matrix(size, size);
+        double stdv = 1.0;
+        double r, s = 2.0 * stdv * stdv;  // Assigning standard deviation to 1.0
+        double sum = 0.0;   // Initialization of sun for normalization
+        int mid = size / 2;
+        for (int x = -mid; x <= mid; x++) // Loop to generate 5x5 kernel
+            for(int y = -mid; y <= mid; y++)
+                sum += m.data[x + 2][y + 2] = (Math.exp(-(x * x + y * y) / s))/(Math.PI * s);
+
+
+        for(int i = 0; i < size; ++i) // Loop to normalize the kernel
+            for(int j = 0; j < size; ++j)
+                m.data[i][j] /= sum;
+
+        return m;
+    }
 
     public Bitmap improveCurrentGaus() {
         Bitmap bm_return = Bitmap.createBitmap(Bm.getWidth(), Bm.getHeight(), Bitmap.Config.ARGB_8888);

@@ -1,10 +1,5 @@
 package com.example.android.histogram.ActionChoose;
 
-import android.graphics.Bitmap;
-
-import com.example.android.histogram.ImageManipulation.ColorImage;
-import com.example.android.histogram.ImageManipulation.GrayFuzzy;
-import com.example.android.histogram.ImageManipulation.GrayImage;
 import com.example.android.histogram.ImageManipulation.ImageWork;
 
 /**

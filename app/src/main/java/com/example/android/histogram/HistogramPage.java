@@ -22,10 +22,10 @@ import com.example.android.histogram.ActionChoose.ChooseAction;
 import com.example.android.histogram.ActionChoose.ColorAction;
 import com.example.android.histogram.ActionChoose.FullAction;
 import com.example.android.histogram.ActionChoose.FuzzyAction;
-import com.example.android.histogram.ImageManipulation.ColorImage;
-import com.example.android.histogram.ImageManipulation.GrayFull;
-import com.example.android.histogram.ImageManipulation.GrayFuzzy;
-import com.example.android.histogram.ImageManipulation.GrayImage;
+import com.example.android.histogram.ImageManipulation.Color.ColorImage;
+import com.example.android.histogram.ImageManipulation.Gray.GrayFull;
+import com.example.android.histogram.ImageManipulation.Gray.GrayFuzzy;
+import com.example.android.histogram.ImageManipulation.Gray.GrayImage;
 import com.example.android.histogram.ImageManipulation.ImageWork;
 import com.jjoe64.graphview.GraphView;
 

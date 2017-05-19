@@ -2,8 +2,7 @@ package com.example.android.histogram.ActionChoose;
 
 import android.graphics.Bitmap;
 
-import com.example.android.histogram.ImageManipulation.ColorImage;
-import com.example.android.histogram.ImageManipulation.GrayFull;
+import com.example.android.histogram.ImageManipulation.Color.ColorImage;
 import com.example.android.histogram.ImageManipulation.ImageWork;
 
 /**

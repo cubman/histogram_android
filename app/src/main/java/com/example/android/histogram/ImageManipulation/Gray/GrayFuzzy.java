@@ -1,4 +1,4 @@
-package com.example.android.histogram.ImageManipulation;
+package com.example.android.histogram.ImageManipulation.Gray;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

@@ -2,9 +2,7 @@ package com.example.android.histogram.ActionChoose;
 
 import android.graphics.Bitmap;
 
-import com.example.android.histogram.ActionChoose.ChooseAction;
-import com.example.android.histogram.ImageManipulation.GrayFuzzy;
-import com.example.android.histogram.ImageManipulation.GrayImage;
+import com.example.android.histogram.ImageManipulation.Gray.GrayFuzzy;
 import com.example.android.histogram.ImageManipulation.ImageWork;
 
 public class FuzzyAction implements ChooseAction {

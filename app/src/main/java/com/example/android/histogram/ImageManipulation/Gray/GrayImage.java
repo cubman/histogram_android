@@ -1,17 +1,12 @@
-package com.example.android.histogram.ImageManipulation;
+package com.example.android.histogram.ImageManipulation.Gray;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.android.histogram.ImageManipulation.ImageWork;
 import com.example.android.histogram.Matrix;
-import com.jjoe64.graphview.GraphView;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by Анатолий on 13.05.2017.

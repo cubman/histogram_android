@@ -1,24 +1,19 @@
-package com.example.android.histogram.ImageManipulation.Gray;
+package com.example.android.histogram.ImageManipulation.Color;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by Анатолий on 14.05.2017.
+ * Created by Анатолий on 31.05.2017.
  */
-public class GrayFuzzy extends GrayImage implements Parcelable {
-
-    public GrayFuzzy(Bitmap Bm) {
-        super(Bm);
+public class ColorFuzzy  extends ColorImage implements Parcelable {
+    public ColorFuzzy(Parcel in) {
+        super(in);
     }
 
-    protected GrayFuzzy(Parcel in) {
-        super(in);
+    public ColorFuzzy(Bitmap Bm) {
+        super(Bm);
     }
 
     @Override
@@ -31,26 +26,27 @@ public class GrayFuzzy extends GrayImage implements Parcelable {
         return 0;
     }
 
-    public static final Creator<GrayFuzzy> CREATOR = new Creator<GrayFuzzy>() {
+    public static final Creator<ColorFuzzy> CREATOR = new Creator<ColorFuzzy>() {
         @Override
-        public GrayFuzzy createFromParcel(Parcel in) {
-            return new GrayFuzzy(in);
+        public ColorFuzzy createFromParcel(Parcel in) {
+            return new ColorFuzzy(in);
         }
 
         @Override
-        public GrayFuzzy[] newArray(int size) {
-            return new GrayFuzzy[size];
+        public ColorFuzzy[] newArray(int size) {
+            return new ColorFuzzy[size];
         }
     };
 
     @Override
     public Bitmap equalisedImage() {
+
         double [] h = new double[ColorsCount];
 
         int nu = 4;
         for (int i = 0; i < Bm.getWidth(); ++i)
             for (int j = 0;j <Bm.getHeight();++j) {
-                int intnsive = Color.red(Bm.getPixel(i, j));
+                int intnsive = (int)(new HSI(Bm.getPixel(i, j)).I * 255);
                 for (int k = intnsive - nu; k <= intnsive + nu; ++k)
                     if (k >= 0 && k < ColorsCount)
                         h[k] += 1 - Math.abs(k - intnsive) / (double)nu;
@@ -62,8 +58,12 @@ public class GrayFuzzy extends GrayImage implements Parcelable {
 
         for (int i = 0; i < Bm.getWidth(); ++i)
             for (int j = 0;j <Bm.getHeight();++j) {
-                int px = (int) (y[Color.red(Bm.getPixel(i, j))]);
-                bm_return.setPixel(i, j, Color.argb(255, px, px, px));
+                int cl = Bm.getPixel(i, j);
+                HSI hsi = new HSI(cl);
+                hsi.I = y[(int)(hsi.I * 255)] / 255.0;
+
+
+                bm_return.setPixel(i, j, hsi.toRGB());
             }
         return bm_return;
     }

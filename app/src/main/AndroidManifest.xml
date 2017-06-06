@@ -19,7 +19,7 @@
         android:windowSoftInputMode="stateHidden|adjustResize">
 
         <activity
-            android:name=".splashScreenActivity"
+            android:name=".SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActBar">
             <intent-filter>

@@ -43,22 +43,7 @@ public class GrayFull extends GrayImage implements Parcelable {
 
     @Override
     public Bitmap equalisedImage() {
-        int [] h = new int[ImageWork.ColorsCount]; // Generate the histogram
-        int [] cumhistogram = new int[ImageWork.ColorsCount]; // Generate cumulative frequency histogram
-        double dim = Bm.getHeight() * Bm.getWidth();
-        double alpha = 255.0 / dim;
-        int [] Sc = new int[ImageWork.ColorsCount];
-
-
-        for (int i = 0; i < ImageWork.ColorsCount; ++i)
-            h[i] = MainRgb[i];
-
-        cumhistogram[0] = h[0];
-        for (int i = 1; i < ImageWork.ColorsCount; ++i)
-            cumhistogram[i] = h[i] + cumhistogram[i - 1];
-
-        for (int i = 0; i < ImageWork.ColorsCount; ++i)
-            Sc[i] = (int) Math.round( alpha * (double)cumhistogram[i]);
+        int [] Sc = getFullEqualisation(MainRgb);
 
         Bitmap bm_return = Bitmap.createBitmap(Bm.getWidth(), Bm.getHeight(), Bitmap.Config.ARGB_8888);
 

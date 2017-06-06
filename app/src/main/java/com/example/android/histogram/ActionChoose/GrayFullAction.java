@@ -8,7 +8,7 @@ import com.example.android.histogram.ImageManipulation.ImageWork;
 /**
  * Created by Анатолий on 17.05.2017.
  */
-public class FullAction implements ChooseAction {
+public class GrayFullAction implements ChooseAction {
     public ImageWork returnNewImage(ImageWork iw, boolean shouldFilter) {
         Bitmap bm = iw.equalisedImage();
         GrayFull Im_hist_equal = new GrayFull(bm);

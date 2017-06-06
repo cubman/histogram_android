@@ -47,4 +47,5 @@
     <string name="FilterSubMenuGray">Filter</string>
     <string name="ColorMenu">Color image</string>
     <string name="FullSubMenuColor">Full equalisation</string>
+    <string name="FuzzySubMenuColor">Fuzzy equalisation</string>
 </resources>

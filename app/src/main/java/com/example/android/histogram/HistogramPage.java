@@ -19,9 +19,12 @@ import android.view.*;
 import android.widget.*;
 
 import com.example.android.histogram.ActionChoose.ChooseAction;
-import com.example.android.histogram.ActionChoose.ColorAction;
-import com.example.android.histogram.ActionChoose.FullAction;
-import com.example.android.histogram.ActionChoose.FuzzyAction;
+import com.example.android.histogram.ActionChoose.ColorFullAction;
+import com.example.android.histogram.ActionChoose.ColorFuzzyAction;
+import com.example.android.histogram.ActionChoose.GrayFullAction;
+import com.example.android.histogram.ActionChoose.GrayFuzzyAction;
+import com.example.android.histogram.ImageManipulation.Color.ColorFull;
+import com.example.android.histogram.ImageManipulation.Color.ColorFuzzy;
 import com.example.android.histogram.ImageManipulation.Color.ColorImage;
 import com.example.android.histogram.ImageManipulation.Gray.GrayFull;
 import com.example.android.histogram.ImageManipulation.Gray.GrayFuzzy;
@@ -61,7 +64,7 @@ public class HistogramPage extends AppCompatActivity {
 
     ImageView Image1, Image2;
     protected Button btmActivate;
-    private int imageType = 0;
+    private boolean allowFilter = false;
     protected Menu menu;
 
     @Override
@@ -92,7 +95,7 @@ public class HistogramPage extends AppCompatActivity {
                 btmActivate.setVisibility(savedInstanceState.getInt("selectedActivate_buttom") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE);
                 Im_main = savedInstanceState.getParcelable("selectImageWorkMain");
                 Im_hist_equal = savedInstanceState.getParcelable("selectImageWorkHistEqualise");
-
+                allowFilter = savedInstanceState.getBoolean("filterGray");
                 camPath = savedInstanceState.getString("imagePathCamera");
 
                 initImageWork(0);
@@ -137,10 +140,11 @@ public class HistogramPage extends AppCompatActivity {
         SubMenu sMenu2 = menu.addSubMenu(0, 6, 0, R.string.GrayMenu);
             sMenu2.add(0, 7, 0, R.string.FullSubMenuGray);
             sMenu2.add(0, 8, 0, R.string.FuzzySubMenuGray);
-            sMenu2.add(0, 9, 0, R.string.FilterSubMenuGray).setCheckable(true).setChecked(true);
+            sMenu2.add(0, 9, 0, R.string.FilterSubMenuGray).setCheckable(true).setChecked(allowFilter);
 
         SubMenu sMenu3 = menu.addSubMenu(0, 10, 0, R.string.ColorMenu);
             sMenu3.add(0, 11, 0, R.string.FullSubMenuColor);
+            sMenu3.add(0, 12, 0, R.string.FuzzySubMenuColor);
 
         this.menu = menu;
         return true;
@@ -184,7 +188,8 @@ public class HistogramPage extends AppCompatActivity {
     }
     // возвращает произвольную фоторафию из списка содержимого
     private int GetRamdomImage() {
-        int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
+        //int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
+        int [] l = new int[]{R.drawable.test5};
 
         return l[new Random().nextInt(l.length)];
     }
@@ -200,6 +205,7 @@ public class HistogramPage extends AppCompatActivity {
         savedInstanceState.putInt("selectedActivate_buttom", btmActivate.getVisibility());
         savedInstanceState.putParcelable("selectImageWorkMain", Im_main);
         savedInstanceState.putParcelable("selectImageWorkHistEqualise", Im_hist_equal);
+        savedInstanceState.putBoolean("filterGray", allowFilter);
         savedInstanceState.putString("imagePathCamera", camPath);
     }
 
@@ -337,7 +343,8 @@ public class HistogramPage extends AppCompatActivity {
                 Im_main = new GrayFull(BmMain);
 
                 initImageWork(0);
-                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new FullAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFullAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
                 return true;
 
             case 8 :
@@ -345,7 +352,7 @@ public class HistogramPage extends AppCompatActivity {
                 Im_main = new GrayFuzzy(BmMain);
 
                 initImageWork(0);
-                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new FuzzyAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFuzzyAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
                 return true;
 
             case 9:
@@ -354,10 +361,17 @@ public class HistogramPage extends AppCompatActivity {
                 return false;
 
             case 11:
-                Im_main = new ColorImage(BmOriginal);
+                Im_main = new ColorFull(BmOriginal);
 
                 initImageWork(0);
-                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new ColorAction(),false));
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new ColorFullAction(), false));
+                return true;
+
+            case 12:
+                Im_main = new ColorFuzzy(BmOriginal);
+
+                initImageWork(0);
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new ColorFuzzyAction(),false));
                 return true;
         }
         return super.onOptionsItemSelected(item);

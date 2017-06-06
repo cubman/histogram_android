@@ -46,4 +46,5 @@
     <string name="FilterSubMenuGray">Фильтр</string>
     <string name="ColorMenu">Цветное изображение</string>
     <string name="FullSubMenuColor">Полная эквивализация</string>
+    <string name="FuzzySubMenuColor">Кусочна эквивализация</string>
 </resources>

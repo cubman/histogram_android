@@ -42,9 +42,6 @@ import static android.app.PendingIntent.getActivity;
 
 
 public class HistogramPage extends AppCompatActivity {
-
-
-
     private static final int GALLERY_REQUEST = 1; // флаг запроса
     private static final int CAMERA_REQUEST = 2; // флаг запроса
 
@@ -59,7 +56,8 @@ public class HistogramPage extends AppCompatActivity {
     private String camPath;
     Bitmap BmOriginal, BmMain, BmHistogramEqaulised;//, OriginalImage, NegativeImage;
 
-   // private List<Map.Entry<String, String>> Colors = new LinkedList<>();
+    private SyncHistogram sh;
+
     private String UserName;
 
     ImageView Image1, Image2;
@@ -87,6 +85,7 @@ public class HistogramPage extends AppCompatActivity {
             gv_hist_equal     = (GraphView) findViewById(R.id.graph_hist_equalised);
 
             btmActivate = (Button) findViewById(R.id.button_build_histogram);
+            sh = new SyncHistogram();
 
             if (savedInstanceState != null) {
                 BmOriginal = savedInstanceState.getParcelable("OriginalImage");
@@ -353,10 +352,11 @@ public class HistogramPage extends AppCompatActivity {
 
                 initImageWork(0);
                 new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFuzzyAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+
                 return true;
 
             case 9:
-                item.setChecked(!item.isChecked());
+                item.setChecked(allowFilter = !allowFilter);
 
                 return false;
 

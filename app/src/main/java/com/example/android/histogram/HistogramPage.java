@@ -128,7 +128,7 @@ public class HistogramPage extends AppCompatActivity {
 
         getMenuInflater().inflate(R.menu.menu_histogram, menu);
         menu.add(0, 0, 0, R.string.save);
-        menu.add(0, 1, 0, "save statistic");
+      //  menu.add(0, 1, 0, "save statistic");
 
         SubMenu sMenu = menu.addSubMenu(0, 2, 0, R.string.loadFrom);
             sMenu.add(0, 3, 0, R.string.gallery);
@@ -187,8 +187,7 @@ public class HistogramPage extends AppCompatActivity {
     }
     // возвращает произвольную фоторафию из списка содержимого
     private int GetRamdomImage() {
-        //int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
-        int [] l = new int[]{R.drawable.test5};
+        int [] l = new int[]{R.drawable.test1,R.drawable.test2, R.drawable.test3, R.drawable.test4, R.drawable.test5, R.drawable.test6,  R.drawable.test7};
 
         return l[new Random().nextInt(l.length)];
     }
@@ -253,7 +252,7 @@ public class HistogramPage extends AppCompatActivity {
 
     private void SavePhoto(Bitmap bitmap, String fName, boolean notify) {
         Boolean b = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-        File file = createFile(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name) + fName == null ? getCurTime() : fName + ".png", this);
+        File file = createFile(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name) + "_" + (fName == null ? getCurTime() : fName) + ".png", this);
         try {
             FileOutputStream fOut = new FileOutputStream(file);
             Log.d("1", "fos");
@@ -343,7 +342,7 @@ public class HistogramPage extends AppCompatActivity {
 
                 initImageWork(0);
 
-                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFullAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFullAction(), menu.getItem(2).getSubMenu().getItem(2).isChecked()));
                 return true;
 
             case 8 :
@@ -351,7 +350,7 @@ public class HistogramPage extends AppCompatActivity {
                 Im_main = new GrayFuzzy(BmMain);
 
                 initImageWork(0);
-                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFuzzyAction(), menu.getItem(3).getSubMenu().getItem(2).isChecked()));
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new GrayFuzzyAction(), menu.getItem(2).getSubMenu().getItem(2).isChecked()));
 
                 return true;
 
@@ -371,7 +370,7 @@ public class HistogramPage extends AppCompatActivity {
                 Im_main = new ColorFuzzy(BmOriginal);
 
                 initImageWork(0);
-                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new ColorFuzzyAction(),false));
+                new SyncHistogram().execute(new Pair<ChooseAction, Boolean>(new ColorFuzzyAction(), false));
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -491,6 +490,9 @@ public class HistogramPage extends AppCompatActivity {
             Bitmap fz = new GrayFuzzy(p[0]).equalisedImage();
             Bitmap fl = new GrayFull(p[0]).equalisedImage();
             ImageWork.saveStatistic(HistogramPage.this, Im_main, new GrayImage(fz), new GrayImage(fl), f, f1, f2);
+           /* Bitmap fz = new ColorFuzzy(p[0]).equalisedImage();
+            Bitmap fl = new ColorFull(p[0]).equalisedImage();
+            ImageWork.saveStatistic(HistogramPage.this, Im_main, new ColorImage(fz), new ColorImage(fl), f, f1, f2);*/
 
             GalleryRefresh(f);
             GalleryRefresh(f1);

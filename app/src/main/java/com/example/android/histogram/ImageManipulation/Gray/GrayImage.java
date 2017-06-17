@@ -35,12 +35,12 @@ public class GrayImage extends ImageWork implements Parcelable {
         double r, s = 2.0 * stdv * stdv;
         double sum = 0.0;
         int mid = size / 2;
-        for (int x = -mid; x <= mid; x++) // Loop to generate 5x5 kernel
+        for (int x = -mid; x <= mid; x++)
             for(int y = -mid; y <= mid; y++)
                 sum += m.data[x + mid][y + mid] = (Math.exp(-(x * x + y * y) / s))/(Math.PI * s);
 
 
-        for(int i = 0; i < size; ++i) // Loop to normalize the kernel
+        for(int i = 0; i < size; ++i)
             for(int j = 0; j < size; ++j)
                 m.data[i][j] /= sum;
 
@@ -49,8 +49,7 @@ public class GrayImage extends ImageWork implements Parcelable {
 
     private Matrix getKernel2(int size) {
         Matrix m = new Matrix(size, size);
-        double stdv = 0.3;
-        double r, s = stdv * stdv;
+        double s = 0.3;
         double sum = 0.0;
         int mid = size / 2;
         for (int x = -mid; x <= mid; x++) // Loop to generate 5x5 kernel
@@ -65,7 +64,7 @@ public class GrayImage extends ImageWork implements Parcelable {
         return m;
     }
 
-    public Bitmap improveCurrentGaus() {
+    public Bitmap improveCurrentReley() {
         int sz = 7;
         int mid = sz / 2;
         Matrix filter = getKernel2(sz);

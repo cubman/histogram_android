@@ -13,7 +13,7 @@ public class GrayFullAction implements ChooseAction {
         Bitmap bm = iw.equalisedImage();
         GrayFull Im_hist_equal = new GrayFull(bm);
         if (shouldFilter)
-            bm = Im_hist_equal.improveCurrentGaus();
+            bm = Im_hist_equal.improveCurrentReley();
         return new GrayFull(bm);
     }
 }

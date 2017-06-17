@@ -179,6 +179,8 @@ public abstract class ImageWork implements Parcelable {
         }
     }
 
+
+
     public Bitmap getCurrentImage() {
         return Bm;
     }

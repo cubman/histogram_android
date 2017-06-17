@@ -141,12 +141,12 @@ public class HSI {
 
     public int toRGB() {
         double R = 0, G = 0, B = 0;
-        H = Math.PI*H/180.0;
-        S = S>0?(S<1?S:1):0;
-        I = I>0?(I<1?I:1):0;
+        H = Math.PI * H / 180.0;
+        S = S < 0 ? 0 : S > 1 ? 1 : S;
+        I = I < 0 ? 0 : I > 1 ? 1 : I;
 
         if (Math.abs(S) < 0.0001)
-            R= G = B = I;
+            R = G = B = I;
         else {
             if (H >= 0 && H < 2 * Math.PI / 3) {
                 B = (1 - S) / 3;
@@ -167,21 +167,11 @@ public class HSI {
             G *= 3 * I;
             B *= 3 * I;
         }
-      
 
-        if (R < 0)
-        R = 0;
-        if (G < 0)
-        G = 0;
-        if (B < 0)
-            B = 0;
+        R = R < 0 ? 0 : R > 1 ? 1 : R;
+        G = G < 0 ? 0 : G > 1 ? 1 : G;
+        B = B < 0 ? 0 : B > 1 ? 1 : B;
 
-        if (R >1)
-            R = 1;
-        if (G > 1)
-            G = 1;
-        if (B > 1)
-            B = 1;
       /*  if (Math.abs(R - r) > 0.0001 || Math.abs(G - g) > 0.0001 ||Math.abs(B - b) > 0.0001) {
             Log.d("d1", String.valueOf(H) + " | " + String.valueOf(R) + " | " + String.valueOf(G) + " | " + String.valueOf(B));
             Log.d("d2", String.valueOf(H) + " | " + String.valueOf(r) + " | " + String.valueOf(g) + " | " + String.valueOf(b));

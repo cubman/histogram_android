@@ -10,7 +10,7 @@ public class GrayFuzzyAction implements ChooseAction {
         Bitmap bm = iw.equalisedImage();
         GrayFuzzy Im_hist_equal = new GrayFuzzy(bm);
         if (shouldFilter)
-            bm = Im_hist_equal.improveCurrentGaus();
+            bm = Im_hist_equal.improveCurrentReley();
        return new GrayFuzzy(bm);
     }
 }
